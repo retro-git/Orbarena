@@ -1,6 +1,10 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ode/ode.h"
+#include "gameobject.h"
+
+#include "ofxAssimpModelLoader.h"
 
 class ofApp : public ofBaseApp{
 
@@ -20,5 +24,22 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+        void collide (dGeomID o1, dGeomID o2);
+
+        ofEasyCam cam;
+
+        dWorldID world;
+        dSpaceID space;
+        dJointGroupID contactgroup;
+        dGeomID ground;
+
+        std::vector<GameObject*> objects;
+
+        /* A light */
+        ofLight m_light1;
 		
 };
+
+static void nearCallback (void *, dGeomID o1, dGeomID o2);
+extern ofApp *myApp;

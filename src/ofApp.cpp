@@ -2,17 +2,94 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    ofDisableArbTex();
 
+    dMass m;
+
+    // create world
+    dInitODE2(0);
+    world = dWorldCreate();
+    space = dHashSpaceCreate (0);
+    contactgroup = dJointGroupCreate (0);
+    dWorldSetGravity (world,0,0,-0.5);
+    ground = dCreatePlane (space,0,0,1,0);
+
+    ofVec3f upVector;
+    upVector.set(0, 0, 1);
+    cam.setAutoDistance(false);
+    cam.setNearClip(0.01);
+    cam.setPosition(10,10,10);
+    cam.lookAt({0,0,0},upVector);
+    cam.setUpAxis(upVector);
+
+    dAllocateODEDataForThread(dAllocateMaskAll);
+
+    /* The light */
+    m_light1.setPosition(8,8,5);
+    m_light1.lookAt(glm::vec3(0,0,0));
+    m_light1.enable();
+
+    for(unsigned int p=0; p<2; p++) {
+        //objects.push_back(new GameObject(ofRandom(-5,5), ofRandom(-5,5), ofRandom(0,10), "Dragon 2.5_dae.dae", world, space) );
+        objects.push_back(new GameObject(0, 0, 200*p+1, "Dragon 2.5_dae.dae", world, space) );
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    dSpaceCollide (space,0,&nearCallback);
 
+    dWorldStep (world,0.05);
+
+    // remove all contact joints
+    dJointGroupEmpty (contactgroup);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+    ofBackground(20);
+    cam.begin();
+
+    ofEnableDepthTest();
+
+    for(auto x: objects ) x->draw();
+
+    ofDisableDepthTest();
+    cam.end();
+}
+
+void ofApp::collide(dGeomID o1, dGeomID o2)
+{
+  int i,n;
+
+  // only collide things with the ground
+  int g1 = (o1 == ground);
+  int g2 = (o2 == ground);
+  //if (!(g1 ^ g2)) return;
+
+  const int N = 10;
+  dContact contact[N];
+  n = dCollide (o1,o2,N,&contact[0].geom,sizeof(dContact));
+  if (n > 0) {
+    for (i=0; i<n; i++) {
+      contact[i].surface.mode = dContactSlip1 | dContactSlip2 |
+        dContactSoftERP | dContactSoftCFM | dContactApprox1;
+      contact[i].surface.mu = dInfinity;
+      contact[i].surface.slip1 = 0.1;
+      contact[i].surface.slip2 = 0.1;
+      contact[i].surface.soft_erp = 0.5;
+      contact[i].surface.soft_cfm = 0.3;
+      dJointID c = dJointCreateContact (world,contactgroup,&contact[i]);
+      dJointAttach (c,
+                    dGeomGetBody(contact[i].geom.g1),
+                    dGeomGetBody(contact[i].geom.g2));
+    }
+  }
+}
+
+static void nearCallback (void *, dGeomID o1, dGeomID o2) {
+    myApp->collide(o1,o2);
 }
 
 //--------------------------------------------------------------
