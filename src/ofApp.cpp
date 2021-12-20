@@ -143,7 +143,7 @@ void ofApp::keyReleased(int key){
         this->inputVertical = 0;
       break;
     case 'd': case 'D':
-        this->inputHorizontal = 1;
+        this->inputHorizontal = 0;
       break;
     case 'q':
         ofExit();
