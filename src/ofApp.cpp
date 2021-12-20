@@ -14,15 +14,6 @@ void ofApp::setup(){
     dWorldSetGravity (world,0,0,-0.5);
     ground = dCreatePlane (space,0,0,1,0);
 
-    ofVec3f upVector;
-    upVector.set(0, 0, 1);
-    //cam.setAutoDistance(false);
-    cam.setNearClip(0.01);
-    //cam.setPosition(10,10,10);
-    cam.setOrientation(glm::vec3(40, 0, 0));
-    //cam.lookAt({0,0,0},upVector);
-    //cam.setUpAxis(upVector);
-
     dAllocateODEDataForThread(dAllocateMaskAll);
 
     /* The light */
@@ -36,6 +27,16 @@ void ofApp::setup(){
         objects.push_back(new PlayerObject(glm::vec3(0, 0, 200*(p+1)), "Test.dae", world, space) );
     }
 
+    ofVec3f upVector;
+    upVector.set(0, 0, 1);
+    cam = FollowCamera((PlayerObject*)(this->objects[0]));
+    //cam.setAutoDistance(false);
+    cam.setNearClip(0.01);
+    //cam.setPosition(10,10,10);
+    //cam.setOrientation(glm::vec3(40, 0, 0));
+    //cam.lookAt({0,0,0},upVector);
+    //cam.setUpAxis(upVector);
+
     skybox.load();
 }
 
@@ -43,10 +44,11 @@ void ofApp::setup(){
 void ofApp::update(){
     for(auto x: objects) x->update();
 
-    const dReal *buggyPos = dBodyGetPosition(this->objects[0]->m_body);
-    glm::vec3 focusPoint = glm::vec3(buggyPos[0], buggyPos[1], buggyPos[2]);
-    glm::vec3 lookDir = cam.getLookAtDir();
-    cam.setPosition(focusPoint - lookDir * 10);
+    //const dReal *buggyPos = dBodyGetPosition(this->objects[0]->m_body);
+    //glm::vec3 focusPoint = glm::vec3(buggyPos[0], buggyPos[1], buggyPos[2]);
+    //glm::vec3 lookDir = cam.getLookAtDir();
+    //cam.setPosition(focusPoint - lookDir * 10);
+    cam.update();
 
     dSpaceCollide (space,0,&nearCallback);
 
@@ -144,6 +146,12 @@ void ofApp::keyReleased(int key){
       break;
     case 'd': case 'D':
         this->inputHorizontal = 0;
+      break;
+    case 'f': case 'F':
+        this->cam.lookAngles.x += 1;
+      break;
+    case 'g': case 'G':
+        this->cam.lookAngles.y += 1;
       break;
     case 'q':
         ofExit();

@@ -4,6 +4,7 @@
 #include "ode/ode.h"
 #include "gameobject.h"
 #include "playerobject.h"
+#include "followcamera.h"
 
 #include "ofxAssimpModelLoader.h"
 #include "ofxSkyBox.h"
@@ -29,7 +30,7 @@ class ofApp : public ofBaseApp{
 
         void collide (dGeomID o1, dGeomID o2);
 
-        ofCamera cam;
+        FollowCamera cam;
         ofxSkyBox skybox;
 
         dWorldID world;
