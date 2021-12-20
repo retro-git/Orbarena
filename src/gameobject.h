@@ -12,7 +12,7 @@
 class GameObject
 {
 public:
-    GameObject(float x, float y, float z, string modelName, dWorldID w, dSpaceID s);
+    GameObject(glm::vec3 pos, string modelName, dWorldID w, dSpaceID s);
 
     /* ODE objects */
     dBodyID m_body;
@@ -23,11 +23,11 @@ public:
     ofxAssimpModelLoader m_model;
 
     /* Attributes of this object */
-    float x, y, z;
+    glm::vec3 pos;
     glm::vec3 accel{};
     ofQuaternion m_rotation;
 
-    void setPosition(float x, float y, float z);
+    void setPosition(glm::vec3 pos);
     void update();
     void draw();
 

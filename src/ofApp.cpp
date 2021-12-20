@@ -16,11 +16,11 @@ void ofApp::setup(){
 
     ofVec3f upVector;
     upVector.set(0, 0, 1);
-    cam.setAutoDistance(false);
+    //cam.setAutoDistance(false);
     cam.setNearClip(0.01);
     cam.setPosition(10,10,10);
     cam.lookAt({0,0,0},upVector);
-    cam.setUpAxis(upVector);
+    //cam.setUpAxis(upVector);
 
     dAllocateODEDataForThread(dAllocateMaskAll);
 
@@ -31,13 +31,21 @@ void ofApp::setup(){
 
     for(unsigned int p=0; p<1; p++) {
         //objects.push_back(new GameObject(ofRandom(-5,5), ofRandom(-5,5), ofRandom(0,10), "Dragon 2.5_dae.dae", world, space) );
-        objects.push_back(new GameObject(0, 0, 200*(p+1), "Dragon 2.5_dae.dae", world, space) );
+        //objects.push_back(new GameObject(0, 0, 200*(p+1), "Test.dae", world, space) );
+        objects.push_back(new GameObject(glm::vec3(0, 0, 200*(p+1)), "Test.dae", world, space) );
     }
+
+    skybox.load();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     for(auto x: objects) x->update();
+
+    const dReal *buggyPos = dBodyGetPosition(this->objects[0]->m_body);
+    glm::vec3 focusPoint = glm::vec3(buggyPos[0], buggyPos[1], buggyPos[2]);
+    glm::vec3 lookDir = cam.getLookAtDir();
+    cam.setPosition(focusPoint - lookDir * 10);
 
     dSpaceCollide (space,0,&nearCallback);
 
@@ -52,6 +60,8 @@ void ofApp::draw(){
 
     ofBackground(20);
     cam.begin();
+
+    skybox.draw();
 
     ofEnableDepthTest();
 

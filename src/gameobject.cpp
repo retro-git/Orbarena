@@ -1,14 +1,14 @@
 #include "gameobject.h"
 #include "ode/ode.h"
 
-GameObject::GameObject(float x, float y, float z, string modelName, dWorldID w, dSpaceID s)
+GameObject::GameObject(glm::vec3 pos, string modelName, dWorldID w, dSpaceID s)
 {
     /* Set our x,y,z variables */
-    this->x=x; this->y=y; this->z=z;
+    this->pos = pos;
 
     /* Set up physics objects */
     m_body = dBodyCreate(w);
-    dBodySetPosition(m_body, x, y, z);
+    dBodySetPosition(m_body, pos.x, pos.y, pos.z);
     dMassSetBox (&m_mass,1,c_len,c_wid,c_hei);
     dMassAdjust (&m_mass,1);
     dBodySetMass (m_body,&m_mass);
@@ -23,10 +23,9 @@ GameObject::GameObject(float x, float y, float z, string modelName, dWorldID w, 
     m_model.setRotation(0,90.0,1,0,0);
 }
 
-void GameObject::setPosition(float x, float y, float z)
+void GameObject::setPosition(glm::vec3 pos)
 {
-    /* Setter method for position */
-    this->x=x; this->y=y; this->z=z;
+    this->pos = pos;
 }
 
 void GameObject::update()
@@ -45,7 +44,7 @@ void GameObject::draw()
     const dReal* oderot = dBodyGetQuaternion(m_body);
 
     /* Set the position (of this PalletObject object) */
-    setPosition(thePos[0],thePos[1], thePos[2]);
+    setPosition(glm::vec3(thePos[0],thePos[1], thePos[2]));
 
     /* Get ODEs rotation quaternion, convert it to an OF one,
      * and then collect the angle and vector from that: */
@@ -62,7 +61,7 @@ void GameObject::draw()
         ofPushMatrix();
 
         /* Translate to the correct position: */
-        ofTranslate(x,y,z);
+        ofTranslate(pos.x,pos.y,pos.z);
 
         /* Rotate by the correct amount: */
         ofRotateDeg(rotationAmount, rotationAngle.x, rotationAngle.y, rotationAngle.z);
@@ -78,7 +77,7 @@ void GameObject::draw()
     ofPushMatrix();
 
     /* Translate to the correct position: */
-    ofTranslate(x,y-0.05,z);
+    ofTranslate(pos.x,pos.y-0.05,pos.z);
 
     /* Rotate by the correct amount: */
     ofRotateDeg(rotationAmount, rotationAngle.x, rotationAngle.y, rotationAngle.z);
