@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ode/ode.h"
 #include "gameobject.h"
+#include "playerobject.h"
 
 #include "ofxAssimpModelLoader.h"
 #include "ofxSkyBox.h"

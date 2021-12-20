@@ -32,8 +32,6 @@ void GameObject::setPosition(glm::vec3 pos)
 void GameObject::update()
 {
     const dReal* vel = dBodyGetLinearVel(m_body);
-    this->accel = glm::vec3(myApp->inputHorizontal, myApp->inputVertical, 0) * ofGetLastFrameTime();
-    ofLog() << this->accel;
     dBodySetLinearVel(m_body, vel[0] + accel.x, vel[1] + accel.y, vel[2] + accel.z);
 }
 

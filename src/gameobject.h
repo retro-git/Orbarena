@@ -28,7 +28,7 @@ public:
     ofQuaternion m_rotation;
 
     void setPosition(glm::vec3 pos);
-    void update();
+    virtual void update();
     void draw();
 
     bool debug_draw = false;
