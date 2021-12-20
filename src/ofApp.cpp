@@ -18,8 +18,9 @@ void ofApp::setup(){
     upVector.set(0, 0, 1);
     //cam.setAutoDistance(false);
     cam.setNearClip(0.01);
-    cam.setPosition(10,10,10);
-    cam.lookAt({0,0,0},upVector);
+    //cam.setPosition(10,10,10);
+    cam.setOrientation(glm::vec3(40, 0, 0));
+    //cam.lookAt({0,0,0},upVector);
     //cam.setUpAxis(upVector);
 
     dAllocateODEDataForThread(dAllocateMaskAll);
@@ -91,7 +92,7 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
     for (i=0; i<n; i++) {
       contact[i].surface.mode = dContactSlip1 | dContactSlip2 |
         dContactSoftERP | dContactSoftCFM | dContactApprox1;
-      contact[i].surface.mu = dInfinity;
+      contact[i].surface.mu = 0.08;
       contact[i].surface.slip1 = 0.1;
       contact[i].surface.slip2 = 0.1;
       contact[i].surface.soft_erp = 0.5;
@@ -112,17 +113,17 @@ static void nearCallback (void *, dGeomID o1, dGeomID o2) {
 void ofApp::keyPressed(int key){
     switch(key) {
     case 'w': case 'W':
-      this->objects[0]->accel.x += 0.01;
+      this->inputVertical = 1;
       break;
-    /*case 'a': case 'A':
-      speed -= 0.3;
+    case 'a': case 'A':
+        this->inputHorizontal = -1;
       break;
     case 's': case 'S':
-      steer -= 0.5;
+        this->inputVertical = -1;
       break;
     case 'd': case 'D':
-      steer += 0.5;
-      break;*/
+        this->inputHorizontal = 1;
+      break;
     case 'q':
         ofExit();
         break;
@@ -131,7 +132,23 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    switch(key) {
+    case 'w': case 'W':
+      this->inputVertical = 0;
+      break;
+    case 'a': case 'A':
+        this->inputHorizontal = 0;
+      break;
+    case 's': case 'S':
+        this->inputVertical = 0;
+      break;
+    case 'd': case 'D':
+        this->inputHorizontal = 1;
+      break;
+    case 'q':
+        ofExit();
+        break;
+    }
 }
 
 //--------------------------------------------------------------

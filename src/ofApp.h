@@ -40,6 +40,9 @@ class ofApp : public ofBaseApp{
 
         /* A light */
         ofLight m_light1;
+
+        float inputVertical;
+        float inputHorizontal;
 		
 };
 
