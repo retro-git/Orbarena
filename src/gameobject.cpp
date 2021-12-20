@@ -29,6 +29,12 @@ void GameObject::setPosition(float x, float y, float z)
     this->x=x; this->y=y; this->z=z;
 }
 
+void GameObject::update()
+{
+    const dReal* vel = dBodyGetLinearVel(m_body);
+    dBodySetLinearVel(m_body, vel[0] + accel.x, vel[1] + accel.y, vel[2] + accel.z);
+}
+
 /* Draw method collects latest data from ODE and draws the model at
  * that location/orientation.
  */

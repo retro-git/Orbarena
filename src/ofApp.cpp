@@ -29,14 +29,16 @@ void ofApp::setup(){
     m_light1.lookAt(glm::vec3(0,0,0));
     m_light1.enable();
 
-    for(unsigned int p=0; p<2; p++) {
+    for(unsigned int p=0; p<1; p++) {
         //objects.push_back(new GameObject(ofRandom(-5,5), ofRandom(-5,5), ofRandom(0,10), "Dragon 2.5_dae.dae", world, space) );
-        objects.push_back(new GameObject(0, 0, 200*p+1, "Dragon 2.5_dae.dae", world, space) );
+        objects.push_back(new GameObject(0, 0, 200*(p+1), "Dragon 2.5_dae.dae", world, space) );
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    for(auto x: objects) x->update();
+
     dSpaceCollide (space,0,&nearCallback);
 
     dWorldStep (world,0.05);
@@ -53,7 +55,7 @@ void ofApp::draw(){
 
     ofEnableDepthTest();
 
-    for(auto x: objects ) x->draw();
+    for(auto x: objects) x->draw();
 
     ofDisableDepthTest();
     cam.end();
@@ -67,6 +69,10 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
   int g1 = (o1 == ground);
   int g2 = (o2 == ground);
   //if (!(g1 ^ g2)) return;
+
+  //if (this->objects[0]->m_geom == o1 && this->objects[1]->m_geom == o2 || this->objects[0]->m_geom == o2 && this->objects[1]->m_geom == o1 ) {
+  //    ofLog(OF_LOG_NOTICE, "DRAGONS");
+  //}
 
   const int N = 10;
   dContact contact[N];
@@ -94,7 +100,23 @@ static void nearCallback (void *, dGeomID o1, dGeomID o2) {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    switch(key) {
+    case 'w': case 'W':
+      this->objects[0]->accel.x += 0.01;
+      break;
+    /*case 'a': case 'A':
+      speed -= 0.3;
+      break;
+    case 's': case 'S':
+      steer -= 0.5;
+      break;
+    case 'd': case 'D':
+      steer += 0.5;
+      break;*/
+    case 'q':
+        ofExit();
+        break;
+    }
 }
 
 //--------------------------------------------------------------
