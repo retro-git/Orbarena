@@ -10,24 +10,22 @@ void PlayerObject::update()
     glm::vec3 newVelocity = glm::vec3(currentVelocity[0], currentVelocity[1], currentVelocity[2]);
 
     targetVelocity = glm::vec3(myApp->inputHorizontal, myApp->inputVertical, 0) * maxSpeed;
-    float maxAccelThisFrame = maxAccel * ofGetLastFrameTime();
 
-    if (currentVelocity[0] < targetVelocity.x) {
-        newVelocity.x = min((float)(currentVelocity[0] + maxAccelThisFrame), targetVelocity.x);
-    }
-    else if (currentVelocity[0] > targetVelocity.x) {
-        newVelocity.x = max((float)(currentVelocity[0] - maxAccelThisFrame), targetVelocity.x);
-    }
+    auto moveTowards = [](float start, float end, float maxAccel) {
+        if (abs(end - start) <= maxAccel) return end;
+        else return start + glm::sign(end - start) * maxAccel;
+        /*if (start < end) {
+            return min(start + maxAccel, end);
+        }
+        else if (start > end) {
+            return max(start - maxAccel, end);
+        }
+        else return start;*/
+    };
 
-    if (currentVelocity[1] < targetVelocity.y) {
-        newVelocity.y = min((float)(currentVelocity[1] + maxAccelThisFrame), targetVelocity.y);
-    }
-    else if (currentVelocity[1] > targetVelocity.y) {
-        newVelocity.y = max((float)(currentVelocity[1] - maxAccelThisFrame), targetVelocity.y);
-    }
-
-    //this->accel = glm::vec3(myApp->inputHorizontal, myApp->inputVertical, 0) * ofGetLastFrameTime();
-    //ofLog() << this->accel;
-    dBodySetLinearVel(m_body, newVelocity.x, newVelocity.y, newVelocity.z);
+    dBodySetLinearVel(m_body,
+                      moveTowards(currentVelocity[0], targetVelocity.x, maxAccel * ofGetLastFrameTime()),
+                      moveTowards(currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
+                      newVelocity.z);
     //GameObject::update();
 }
