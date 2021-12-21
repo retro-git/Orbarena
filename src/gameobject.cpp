@@ -19,7 +19,7 @@ GameObject::GameObject(glm::vec3 pos, string modelName, dWorldID w, dSpaceID s)
     m_model.loadModel(modelName, 20);
     double scale = 1.0/ m_model.getNormalizedScale();
 
-    m_model.setScale(scale,scale*.5,scale);
+    m_model.setScale(scale,scale,scale);
     //m_model.setRotation(0,90.0,1,0,0);
     m_model.setRotation(0,0.0,0,0,0);
 }

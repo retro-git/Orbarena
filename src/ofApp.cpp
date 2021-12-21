@@ -24,7 +24,7 @@ void ofApp::setup(){
     for(unsigned int p=0; p<1; p++) {
         //objects.push_back(new GameObject(ofRandom(-5,5), ofRandom(-5,5), ofRandom(0,10), "Dragon 2.5_dae.dae", world, space) );
         //objects.push_back(new GameObject(0, 0, 200*(p+1), "Test.dae", world, space) );
-        objects.push_back(new PlayerObject(glm::vec3(0, 0, 200*(p+1)), "Orb dude49.dae", world, space) );
+        objects.push_back(new PlayerObject(glm::vec3(0, 0, 200*(p+1)), "Orbos.dae", world, space) );
     }
 
     ofVec3f upVector;
