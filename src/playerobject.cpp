@@ -27,7 +27,7 @@ void PlayerObject::update()
     }
 
     //this->accel = glm::vec3(myApp->inputHorizontal, myApp->inputVertical, 0) * ofGetLastFrameTime();
-    ofLog() << this->accel;
+    //ofLog() << this->accel;
     dBodySetLinearVel(m_body, newVelocity.x, newVelocity.y, newVelocity.z);
     //GameObject::update();
 }

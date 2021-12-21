@@ -60,6 +60,8 @@ Project{
         //
         // cpp.compilerWrapper: 'ccache'
 
+        cpp.cxxLanguageVersion: "c++17"
+
         Depends{
             name: "cpp"
         }
