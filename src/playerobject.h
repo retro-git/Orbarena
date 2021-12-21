@@ -10,8 +10,8 @@ public:
 
     virtual void update() override;
 
-    float maxSpeed = 10;
-    float maxAccel = 10;
+    float maxSpeed = 7;
+    float maxAccel = 7;
 
     glm::vec3 targetVelocity{};
 };
