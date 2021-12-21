@@ -17,19 +17,23 @@ void ofApp::setup(){
     dAllocateODEDataForThread(dAllocateMaskAll);
 
     /* The light */
-    m_light1.setPosition(8,8,5);
+    m_light1.setPosition(0,0,20);
     m_light1.lookAt(glm::vec3(0,0,0));
+    m_light1.setAmbientColor(ofFloatColor::white);
     m_light1.enable();
 
-    for(unsigned int p=0; p<1; p++) {
+    /*for(unsigned int p=0; p<1; p++) {
         //objects.push_back(new GameObject(ofRandom(-5,5), ofRandom(-5,5), ofRandom(0,10), "Dragon 2.5_dae.dae", world, space) );
         //objects.push_back(new GameObject(0, 0, 200*(p+1), "Test.dae", world, space) );
-        objects.push_back(new PlayerObject(glm::vec3(0, 0, 200*(p+1)), "Orb dude49.dae", world, space) );
-    }
+        objects.push_back(new PlayerObject(glm::vec3(0, 0, 200*(p+1)), "Orbos.dae", world, space) );
+    }*/
+
+    m_player = new PlayerObject(glm::vec3(0, 0, 200), "Orbos.dae", world, space);
+    m_level = new GameObject(glm::vec3(0, 0, 0), "Platforming_Single.dae", world, space);
 
     ofVec3f upVector;
     upVector.set(0, 0, 1);
-    cam = FollowCamera((PlayerObject*)(this->objects[0]));
+    cam = FollowCamera(m_player);
     //cam.setAutoDistance(false);
     cam.setNearClip(0.01);
     //cam.setPosition(10,10,10);
@@ -42,12 +46,9 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    for(auto x: objects) x->update();
+    //for(auto x: objects) x->update();
 
-    //const dReal *buggyPos = dBodyGetPosition(this->objects[0]->m_body);
-    //glm::vec3 focusPoint = glm::vec3(buggyPos[0], buggyPos[1], buggyPos[2]);
-    //glm::vec3 lookDir = cam.getLookAtDir();
-    //cam.setPosition(focusPoint - lookDir * 10);
+    m_player->update();
     cam.update();
 
     dSpaceCollide (space,0,&nearCallback);
@@ -64,11 +65,13 @@ void ofApp::draw(){
     ofBackground(20);
     cam.begin();
 
-    skybox.draw();
+    //skybox.draw();
 
     ofEnableDepthTest();
 
-    for(auto x: objects) x->draw();
+    //for(auto x: objects) x->draw();
+    m_player->draw();
+    //m_level->draw();
 
     ofDisableDepthTest();
     cam.end();

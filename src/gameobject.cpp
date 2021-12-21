@@ -19,9 +19,11 @@ GameObject::GameObject(glm::vec3 pos, string modelName, dWorldID w, dSpaceID s)
     m_model.loadModel(modelName, 20);
     double scale = 1.0/ m_model.getNormalizedScale();
 
-    m_model.setScale(scale,scale*.5,scale);
+    //m_model.setScale(scale,scale*.5,scale);
+    m_model.setScale(scale, scale, scale);
     //m_model.setRotation(0,90.0,1,0,0);
-    m_model.setRotation(0,0.0,0,0,0);
+    m_model.setRotation(0,0,0,0,0);
+    //m_model.setRotation(0, -90, 0, 0, 1);
 }
 
 void GameObject::setPosition(glm::vec3 pos)
@@ -31,8 +33,8 @@ void GameObject::setPosition(glm::vec3 pos)
 
 void GameObject::update()
 {
-    const dReal* vel = dBodyGetLinearVel(m_body);
-    dBodySetLinearVel(m_body, vel[0] + accel.x, vel[1] + accel.y, vel[2] + accel.z);
+    //const dReal* vel = dBodyGetLinearVel(m_body);
+    //dBodySetLinearVel(m_body, vel[0] + accel.x, vel[1] + accel.y, vel[2] + accel.z);
 }
 
 /* Draw method collects latest data from ODE and draws the model at

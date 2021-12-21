@@ -5,6 +5,7 @@
 #include "gameobject.h"
 #include "playerobject.h"
 #include "followcamera.h"
+#include "playerobject.h"
 
 #include "ofxAssimpModelLoader.h"
 #include "ofxSkyBox.h"
@@ -38,7 +39,9 @@ class ofApp : public ofBaseApp{
         dJointGroupID contactgroup;
         dGeomID ground;
 
-        std::vector<GameObject*> objects;
+        //std::vector<GameObject*> objects;
+        PlayerObject* m_player;
+        GameObject* m_level;
 
         /* A light */
         ofLight m_light1;
