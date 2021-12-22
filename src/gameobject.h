@@ -12,8 +12,6 @@
 class GameObject
 {
 public:
-    GameObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorldID w, dSpaceID s);
-
     /* ODE objects */
     dBodyID m_body;
     dMass   m_mass;
@@ -30,12 +28,9 @@ public:
     ofQuaternion m_rotation;
 
     void setPosition(glm::vec3 pos);
-    virtual void update();
-    void draw();
+    virtual void update() = 0;
+    virtual void draw() = 0;
 
     bool debug_draw = true;
-
-    /* The length, width, height of the object */
-    const float c_len=1,c_wid=1,c_hei=0.1;
 };
 #endif // GAMEOBJECT_H

@@ -16,11 +16,15 @@ Project{
             "src/followcamera.h",
             "src/gameobject.cpp",
             "src/gameobject.h",
+            "src/physicsobject.cpp",
+            "src/physicsobject.h",
             "src/playerobject.cpp",
             "src/playerobject.h",
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
+            "src/staticobject.cpp",
+            "src/staticobject.h",
         ]
 
         // This project is using addons.make to include the addons

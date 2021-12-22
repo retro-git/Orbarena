@@ -27,7 +27,8 @@ void ofApp::setup(){
         objects.push_back(new PlayerObject(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), "Orbos.dae", world, space) );
     }
 
-    objects.push_back(new GameObject(glm::vec3(0, 0, 15), glm::vec3(0, 90, 0), "testCube.obj", world, space));
+    objects.push_back(new StaticObject(glm::vec3(0, 15, 1), glm::vec3(0, 0, 0), "Orbos.dae", world, space));
+    objects.push_back(new PhysicsObject(glm::vec3(15, 15, 1), glm::vec3(0, 0, 0), "Orbos.dae", world, space));
 
     ofVec3f upVector;
     upVector.set(0, 0, 1);

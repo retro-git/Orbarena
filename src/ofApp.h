@@ -5,6 +5,8 @@
 #include "gameobject.h"
 #include "playerobject.h"
 #include "followcamera.h"
+#include "staticobject.h"
+#include "physicsobject.h"
 
 #include "ofxAssimpModelLoader.h"
 #include "ofxSkyBox.h"
