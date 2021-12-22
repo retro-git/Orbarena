@@ -30,8 +30,8 @@ GameObject::GameObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorldID 
     m_geom = dCreateTriMesh(s, data, 0, 0, 0);
     dGeomSetBody(m_geom, m_body);
 
-    //ofLog() << m_model.getMeshNames().at(0);
-    //ofLog() << m_model.getMeshCount();
+    ofLog() << m_model.getMeshNames().at(0);
+    ofLog() << m_model.getMeshCount();
 }
 
 void GameObject::setPosition(glm::vec3 pos)

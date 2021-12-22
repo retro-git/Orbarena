@@ -27,7 +27,7 @@ void ofApp::setup(){
         objects.push_back(new PlayerObject(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), "Orbos.dae", world, space) );
     }
 
-    objects.push_back(new GameObject(glm::vec3(0, 10, 100), glm::vec3(180, 0, 0), "Dragon 2.5_dae.dae", world, space));
+    objects.push_back(new GameObject(glm::vec3(0, 0, 15), glm::vec3(0, 90, 0), "testCube.obj", world, space));
 
     ofVec3f upVector;
     upVector.set(0, 0, 1);
