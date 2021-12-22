@@ -1,6 +1,6 @@
 #include "playerobject.h"
 
-PlayerObject::PlayerObject(glm::vec3 pos, string modelName, dWorldID w, dSpaceID s) : GameObject(pos, modelName, w, s)
+PlayerObject::PlayerObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorldID w, dSpaceID s) : GameObject(pos, rot, modelName, w, s)
 {
 }
 

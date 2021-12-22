@@ -1,27 +1,37 @@
 #include "gameobject.h"
 #include "ode/ode.h"
 
-GameObject::GameObject(glm::vec3 pos, string modelName, dWorldID w, dSpaceID s)
+template<typename T> struct TD;
+
+GameObject::GameObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorldID w, dSpaceID s)
 {
     /* Set our x,y,z variables */
     this->pos = pos;
 
+    /* Set up graphics objects */
+    m_model.loadModel(modelName);
+    this->vertices = m_model.getMesh(0).getVertices();
+    this->indices = m_model.getMesh(0).getIndices();
+
+    m_model.setRotation(0,rot.x,1,0,0);
+    m_model.setRotation(1,rot.y,0,1,0);
+    m_model.setRotation(2,rot.z,0,0,1);
+    double scale = 1.0/ m_model.getNormalizedScale();
+    m_model.setScale(scale,scale,scale);
+
     /* Set up physics objects */
     m_body = dBodyCreate(w);
     dBodySetPosition(m_body, pos.x, pos.y, pos.z);
-    dMassSetBox (&m_mass,1,c_len,c_wid,c_hei);
-    dMassAdjust (&m_mass,1);
-    dBodySetMass (m_body,&m_mass);
-    m_geom = dCreateBox(s, c_len,c_wid,c_hei);
-    dGeomSetBody (m_geom, m_body);
+    ofMesh m = m_model.getMesh(0);
+    dTriMeshDataID data = dGeomTriMeshDataCreate();
+    dGeomTriMeshDataBuildSingle(data, &this->vertices[0], 3 * sizeof(float), std::size(this->vertices),
+                                &this->indices[0], std::size(this->indices), 3 * sizeof(this->indices.at(0)));
 
-    /* Set up graphics objects */
-    m_model.loadModel(modelName, 20);
-    double scale = 1.0/ m_model.getNormalizedScale();
+    m_geom = dCreateTriMesh(s, data, 0, 0, 0);
+    dGeomSetBody(m_geom, m_body);
 
-    m_model.setScale(scale,scale,scale);
-    //m_model.setRotation(0,90.0,1,0,0);
-    m_model.setRotation(0,0.0,0,0,0);
+    //ofLog() << m_model.getMeshNames().at(0);
+    //ofLog() << m_model.getMeshCount();
 }
 
 void GameObject::setPosition(glm::vec3 pos)
@@ -44,7 +54,7 @@ void GameObject::draw()
     const dReal* thePos = dBodyGetPosition(m_body);
     const dReal* oderot = dBodyGetQuaternion(m_body);
 
-    /* Set the position (of this PalletObject object) */
+    /* Set the position */
     setPosition(glm::vec3(thePos[0],thePos[1], thePos[2]));
 
     /* Get ODEs rotation quaternion, convert it to an OF one,
@@ -57,7 +67,7 @@ void GameObject::draw()
     /* We can draw a transparent white box where the ODE object is, to
      * make sure that our model is being drawn approximately correctly */
     if(debug_draw) {
-        ofSetColor(ofColor::white,128);
+        ofSetColor(ofColor::black,255);
         /* Save the current state of the graphics transform stack: */
         ofPushMatrix();
 

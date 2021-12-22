@@ -12,7 +12,7 @@
 class GameObject
 {
 public:
-    GameObject(glm::vec3 pos, string modelName, dWorldID w, dSpaceID s);
+    GameObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorldID w, dSpaceID s);
 
     /* ODE objects */
     dBodyID m_body;
@@ -21,6 +21,8 @@ public:
 
     /* The 3D model */
     ofxAssimpModelLoader m_model;
+    std::vector<glm::vec3> vertices;
+    std::vector<uint> indices;
 
     /* Attributes of this object */
     glm::vec3 pos;
@@ -31,7 +33,7 @@ public:
     virtual void update();
     void draw();
 
-    bool debug_draw = false;
+    bool debug_draw = true;
 
     /* The length, width, height of the object */
     const float c_len=1,c_wid=1,c_hei=0.1;

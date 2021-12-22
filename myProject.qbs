@@ -13,8 +13,6 @@ Project{
 
         files: [
             "src/followcamera.cpp",
-            "src/followcamera.cpp",
-            "src/followcamera.h",
             "src/followcamera.h",
             "src/gameobject.cpp",
             "src/gameobject.h",
