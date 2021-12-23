@@ -6,7 +6,7 @@
 class PlayerObject : public GameObject
 {
 public:
-    PlayerObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorldID w, dSpaceID s);
+    PlayerObject(glm::vec3 pos, glm::vec3 rot, glm::vec3 scale, string modelName, dWorldID w, dSpaceID s);
 
     virtual void update() override;
     virtual void draw() override;

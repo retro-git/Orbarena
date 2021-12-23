@@ -1,7 +1,7 @@
 #include "staticobject.h"
 #include "ode/ode.h"
 
-StaticObject::StaticObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorldID w, dSpaceID s)
+StaticObject::StaticObject(glm::vec3 pos, glm::vec3 rot, glm::vec3 scale, string modelName, dWorldID w, dSpaceID s)
 {
     /* Set our x,y,z variables */
     this->pos = pos;
@@ -12,8 +12,8 @@ StaticObject::StaticObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorl
     m_model.setRotation(0,rot.x,1,0,0);
     m_model.setRotation(1,rot.y,0,1,0);
     m_model.setRotation(2,rot.z,0,0,1);
-    double scale = 1.0/ m_model.getNormalizedScale();
-    m_model.setScale(scale,scale,scale);
+    double normalizedScale = 1.0/ m_model.getNormalizedScale();
+    m_model.setScale(normalizedScale * scale.x, normalizedScale * scale.y, normalizedScale * scale.z);
 
     this->vertices = m_model.getMesh(0).getVertices();
     this->indices = m_model.getMesh(0).getIndices();
@@ -21,7 +21,14 @@ StaticObject::StaticObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorl
     for (auto& vec : this->vertices) ofLog() << vec;
     ofLog() << "doen";
 
-    for (auto& vec : this->vertices) vec = glm::translate(pos) * glm::vec4(vec, 1.f);
+    glm::mat4 r = glm::rotate(glm::mat4(1.f), glm::radians(rot.x), glm::vec3(1, 0, 0)) *
+            glm::rotate(glm::mat4(1.f), glm::radians(rot.y), glm::vec3(0, 1, 0)) *
+            glm::rotate(glm::mat4(1.f), glm::radians(rot.z), glm::vec3(0, 0, 1));
+
+    //glm::mat4 m = glm::translate(pos) * glm::rotate()
+    //for (auto& vec : this->vertices) vec = m_model.getModelMatrix() * glm::vec4(vec, 1.f);
+    //for (auto& vec : this->vertices) vec = glm::translate(pos) * r * glm::vec4(vec, 1.f);
+    for (auto& vec : this->vertices) vec = glm::translate(pos) * r * glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, scale.z)) * glm::vec4(vec, 1.f);
 
     for (auto& vec : this->vertices) ofLog() << vec;
 
@@ -36,8 +43,8 @@ StaticObject::StaticObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorl
     m_geom = dCreateTriMesh(s, data, 0, 0, 0);
     //dGeomSetBody(m_geom, m_body);
 
-    //ofLog() << m_model.getMeshNames().at(0);
-    //ofLog() << m_model.getMeshCount();
+    ofLog() << m_model.getMeshNames().at(0);
+    ofLog() << m_model.getMeshCount();
 }
 
 void StaticObject::update()

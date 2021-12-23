@@ -9,7 +9,7 @@
 class StaticObject : public GameObject
 {
 public:
-    StaticObject(glm::vec3 pos, glm::vec3 rot, string modelName, dWorldID w, dSpaceID s);
+    StaticObject(glm::vec3 pos, glm::vec3 rot, glm::vec3 scale, string modelName, dWorldID w, dSpaceID s);
 
     void update() override;
     void draw() override;
