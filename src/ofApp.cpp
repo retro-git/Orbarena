@@ -12,12 +12,12 @@ void ofApp::setup(){
     space = dHashSpaceCreate (0);
     contactgroup = dJointGroupCreate (0);
     dWorldSetGravity (world,0,0,-0.5);
-    ground = dCreatePlane (space,0,0,1,0);
+    //ground = dCreatePlane (space,0,0,1,0);
 
     dAllocateODEDataForThread(dAllocateMaskAll);
 
     /* The light */
-    m_light1.setPosition(8,8,5);
+    m_light1.setPosition(0,0,15);
     m_light1.lookAt(glm::vec3(0,0,0));
     m_light1.enable();
 
@@ -28,7 +28,7 @@ void ofApp::setup(){
     }
 
     //objects.push_back(new StaticObject(glm::vec3(0, 15, 1), glm::vec3(0, 0, 0), "Orbos.dae", world, space));
-    objects.push_back(new StaticObject(glm::vec3(0, 0, 5), glm::vec3(90, 180, 90), glm::vec3(50, 50, 50), "testCube.obj", world, space));
+    objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 180, 90), glm::vec3(5, 50, 50), "testCube.obj", world, space));
     objects.push_back(new PhysicsObject(glm::vec3(15, 15, 5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space));
 
     ofVec3f upVector;
@@ -64,7 +64,7 @@ void ofApp::draw(){
     ofBackground(20);
     cam.begin();
 
-    skybox.draw();
+    //skybox.draw();
 
     ofEnableDepthTest();
 
@@ -79,8 +79,8 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
   int i,n;
 
   // only collide things with the ground
-  int g1 = (o1 == ground);
-  int g2 = (o2 == ground);
+  //int g1 = (o1 == ground);
+  //int g2 = (o2 == ground);
   //if (!(g1 ^ g2)) return;
 
   //if (this->objects[0]->m_geom == o1 && this->objects[1]->m_geom == o2 || this->objects[0]->m_geom == o2 && this->objects[1]->m_geom == o1 ) {

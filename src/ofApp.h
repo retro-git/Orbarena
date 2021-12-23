@@ -38,7 +38,7 @@ class ofApp : public ofBaseApp{
         dWorldID world;
         dSpaceID space;
         dJointGroupID contactgroup;
-        dGeomID ground;
+        //dGeomID ground;
 
         std::vector<GameObject*> objects;
 
