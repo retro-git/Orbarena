@@ -29,7 +29,7 @@ void ofApp::setup(){
 
     //objects.push_back(new StaticObject(glm::vec3(0, 15, 1), glm::vec3(0, 0, 0), "Orbos.dae", world, space));
     objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 180, 90), glm::vec3(5, 50, 50), "testCube.obj", world, space));
-    objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 0, 0), glm::vec3(5, 5, 5), "untitled.obj", world, space));
+    objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 0, 0), glm::vec3(5, 5, 5), "anything.obj", world, space));
     objects.push_back(new PhysicsObject(glm::vec3(15, 15, 5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space));
 
     ofVec3f upVector;
@@ -76,6 +76,8 @@ void ofApp::draw(){
 
     ofDisableDepthTest();
     cam.end();
+
+   // ofDrawBitmapString("Hello World", ofGetWindowWidth() /2, ofGetWindowHeight() /2);
 }
 
 void ofApp::collide(dGeomID o1, dGeomID o2)
@@ -91,7 +93,7 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
   //    ofLog(OF_LOG_NOTICE, "DRAGONS");
   //}
 
-  const int N = 10000;
+  const int N = 10;
   dContact contact[N];
   n = dCollide (o1,o2,N,&contact[0].geom,sizeof(dContact));
   if (n > 0) {
