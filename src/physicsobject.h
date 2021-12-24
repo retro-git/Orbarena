@@ -11,6 +11,9 @@ public:
 
     virtual void update() override;
     virtual void draw() override;
+
+    std::vector<glm::vec3> vertices;
+    std::vector<uint> indices;
 };
 
 #endif // PHYSICSOBJECT_H

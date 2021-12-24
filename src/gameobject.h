@@ -19,8 +19,6 @@ public:
 
     /* The 3D model */
     ofxAssimpModelLoader m_model;
-    std::vector<glm::vec3> vertices;
-    std::vector<uint> indices;
 
     /* Attributes of this object */
     glm::vec3 pos;

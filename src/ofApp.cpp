@@ -24,12 +24,12 @@ void ofApp::setup(){
     for(unsigned int p=0; p<1; p++) {
         //objects.push_back(new GameObject(ofRandom(-5,5), ofRandom(-5,5), ofRandom(0,10), "Dragon 2.5_dae.dae", world, space) );
         //objects.push_back(new GameObject(0, 0, 200*(p+1), "Test.dae", world, space) );
-        objects.push_back(new PlayerObject(glm::vec3(0, 0, 150), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space) );
+        objects.push_back(new PlayerObject(glm::vec3(0, 0, 25), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space) );
     }
 
     //objects.push_back(new StaticObject(glm::vec3(0, 15, 1), glm::vec3(0, 0, 0), "Orbos.dae", world, space));
-    //objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 180, 90), glm::vec3(5, 50, 50), "testCube.obj", world, space));
-    objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 0, 0), glm::vec3(2, 2, 2), "level_platform.obj", world, space));
+    objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 180, 90), glm::vec3(5, 50, 50), "testCube.obj", world, space));
+    objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 0, 0), glm::vec3(5, 5, 5), "untitled.obj", world, space));
     objects.push_back(new PhysicsObject(glm::vec3(15, 15, 5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space));
 
     ofVec3f upVector;
