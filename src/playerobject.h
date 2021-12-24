@@ -15,9 +15,6 @@ public:
     float maxAccel = 7;
 
     glm::vec3 targetVelocity{};
-
-    std::vector<glm::vec3> vertices;
-    std::vector<uint> indices;
 };
 
 #endif // PLAYEROBJECT_H

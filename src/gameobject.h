@@ -29,6 +29,9 @@ public:
     virtual void update() = 0;
     virtual void draw() = 0;
 
+    std::vector<std::vector<glm::vec3>> vertices;
+    std::vector<std::vector<uint>> indices;
+
     bool debug_draw = true;
 };
 #endif // GAMEOBJECT_H

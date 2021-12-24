@@ -13,9 +13,6 @@ public:
 
     void update() override;
     void draw() override;
-
-    std::vector<std::vector<glm::vec3>> vertices;
-    std::vector<std::vector<uint>> indices;
 };
 
 #endif // STATICOBJECT_H
