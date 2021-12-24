@@ -38,7 +38,7 @@ void FollowCamera::updateFollowPoint()
 bool FollowCamera::playerControl()
 {
     if(myApp->inputMouseVertical != 0 ||  myApp->inputMouseHorizontal != 0) {
-        this->lookAngles += rotationMaxAccel * ofGetLastFrameTime() * glm::vec2(-myApp->inputMouseVertical, myApp->inputMouseHorizontal);
+        this->lookAngles += rotationMaxAccel * ofGetLastFrameTime() * (glm::vec2(-myApp->inputMouseVertical, myApp->inputMouseHorizontal) * sensitivity);
         if (lookAngles.y < 0) lookAngles.y += 360;
         else if (lookAngles.y >= 360) lookAngles.y -= 360;
 
