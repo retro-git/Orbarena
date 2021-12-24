@@ -50,6 +50,9 @@ void ofApp::update(){
 
     cam.update();
 
+    this->inputMouseHorizontal = 0;
+    this->inputMouseVertical = 0;
+
     dSpaceCollide (space,0,&nearCallback);
 
     dWorldStep (world,0.05);
@@ -161,7 +164,15 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-
+    auto curMousePosition = glm::vec2(x, y);
+    glm::vec2 delta = glm::vec2(x, y) - prevMousePosition;
+    if (glm::length(delta) > 60.f) {
+        prevMousePosition = curMousePosition;
+        return;
+    }
+    this->inputMouseHorizontal = delta.x;
+    this->inputMouseVertical = delta.y;
+    prevMousePosition = curMousePosition;
 }
 
 //--------------------------------------------------------------

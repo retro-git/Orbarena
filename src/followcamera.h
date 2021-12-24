@@ -15,7 +15,8 @@ public:
 
     void update();
     void updateFollowPoint();
-    bool autoAlign();
+    bool playerControl();
+    void autoControl();
 
     PlayerObject* followObject;
     glm::vec3 followPoint{};
@@ -24,6 +25,11 @@ public:
     float followPointRadius = 10;
     float rotationMaxAccel = 90;
     float alignmentAngleRange = 80;
+
+    float camDistance = 20;
+
+    float lastPlayerControlTimestamp{};
+    float autoControlDelay = 1;
 };
 
 #endif // FOLLOWCAMERA_H

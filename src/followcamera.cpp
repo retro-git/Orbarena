@@ -35,12 +35,29 @@ void FollowCamera::updateFollowPoint()
     }
 }
 
-bool FollowCamera::autoAlign()
+bool FollowCamera::playerControl()
+{
+    if(myApp->inputMouseVertical != 0 ||  myApp->inputMouseHorizontal != 0) {
+        this->lookAngles += rotationMaxAccel * ofGetLastFrameTime() * glm::vec2(-myApp->inputMouseVertical, myApp->inputMouseHorizontal);
+        if (lookAngles.y < 0) lookAngles.y += 360;
+        else if (lookAngles.y >= 360) lookAngles.y -= 360;
+
+        this->lookAngles.x = clamp(lookAngles.x, 15.f, 90.f);
+        this->lastPlayerControlTimestamp = ofGetElapsedTimef();
+        //ofLog() << lookAngles.x;
+        //ofLog() << lookAngles.x;
+        return true;
+    }
+
+    return false;
+}
+
+void FollowCamera::autoControl()
 {
     glm::vec2 diff = glm::vec2(followPoint - prevFollowPoint);
 
     if (glm::length2(diff) < 0.001) {
-        return false;
+        return;
     }
 
     float rotationMaxAccelThisFrame = rotationMaxAccel * ofGetLastFrameTime();
@@ -68,6 +85,7 @@ bool FollowCamera::autoAlign()
         return moveTowards(start, start + delta, maxAccel);
     };
 
+    //scale down rotation accel for smaller adjustments
     float targetRotDiffAbs = abs(angleDelta(lookAngles.y, dirToAngle(glm::normalize(diff))));
     if(targetRotDiffAbs < alignmentAngleRange)
     {
@@ -80,18 +98,21 @@ bool FollowCamera::autoAlign()
     lookAngles.y = moveTowardsAngle(lookAngles.y, dirToAngle(glm::normalize(diff)), rotationMaxAccelThisFrame);
 
     //lookAngles.y = dirToAngle(glm::normalize(diff));
-
-    return true;
 }
 
 void FollowCamera::update()
 {
     updateFollowPoint();
-    autoAlign();
+
+    bool bPlayerControlled = playerControl();
+    if (!(bPlayerControlled)) {
+        if (ofGetElapsedTimef() - lastPlayerControlTimestamp > autoControlDelay)
+            autoControl();
+    }
 
     glm::quat rotation = glm::quat(glm::vec3(glm::radians(lookAngles.x), 0, glm::radians(-lookAngles.y)));
     glm::vec3 lookDir = glm::rotate(rotation, glm::vec3(0, 0, -1));
-    glm::vec3 pos = followPoint - lookDir * 20;
+    glm::vec3 pos = followPoint - lookDir * camDistance;
 
     this->setPosition(pos);
     this->setOrientation(rotation);

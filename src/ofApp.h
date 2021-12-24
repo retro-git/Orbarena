@@ -45,8 +45,12 @@ class ofApp : public ofBaseApp{
         /* A light */
         ofLight m_light1;
 
-        float inputVertical;
-        float inputHorizontal;
+        glm::vec2 prevMousePosition;
+
+        float inputVertical{};
+        float inputHorizontal{};
+        float inputMouseVertical{};
+        float inputMouseHorizontal{};
 		
 };
 
