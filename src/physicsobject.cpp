@@ -97,7 +97,7 @@ void PhysicsObject::draw()
     ofPushMatrix();
 
     /* Translate to the correct position: */
-    ofTranslate(pos.x,pos.y-0.05,pos.z);
+    ofTranslate(pos.x,pos.y,pos.z);
 
     /* Rotate by the correct amount: */
     ofRotateDeg(rotationAmount, rotationAngle.x, rotationAngle.y, rotationAngle.z);
