@@ -21,11 +21,8 @@ public:
     ofxAssimpModelLoader m_model;
 
     /* Attributes of this object */
-    glm::vec3 pos;
-    glm::vec3 accel{};
     ofQuaternion m_rotation;
 
-    void setPosition(glm::vec3 pos);
     virtual void update() = 0;
     virtual void draw() = 0;
 
