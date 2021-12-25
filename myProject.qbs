@@ -39,7 +39,6 @@ Project{
 
         of.addons: [
              'ofxAssimpModelLoader',
-             'ofxSkyBox',
         ]
 
         // additional flags for the project. the of module sets some

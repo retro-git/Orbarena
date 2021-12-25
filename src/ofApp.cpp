@@ -25,6 +25,7 @@ void ofApp::setup(){
         //objects.push_back(new GameObject(ofRandom(-5,5), ofRandom(-5,5), ofRandom(0,10), "Dragon 2.5_dae.dae", world, space) );
         //objects.push_back(new GameObject(0, 0, 200*(p+1), "Test.dae", world, space) );
         objects.push_back(new PlayerObject(glm::vec3(0, 0, 25), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space) );
+        objects.push_back(new PlayerObject(glm::vec3(0, 15, 25), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space) );
     }
 
     //objects.push_back(new StaticObject(glm::vec3(0, 15, 1), glm::vec3(0, 0, 0), "Orbos.dae", world, space));
@@ -42,8 +43,6 @@ void ofApp::setup(){
     //cam.setOrientation(glm::vec3(40, 0, 0));
     //cam.lookAt({0,0,0},upVector);
     //cam.setUpAxis(upVector);
-
-    skybox.load();
 }
 
 //--------------------------------------------------------------
@@ -68,8 +67,6 @@ void ofApp::draw(){
 
     ofBackground(20);
     cam.begin();
-
-    //skybox.draw();
 
     ofEnableDepthTest();
 

@@ -9,7 +9,6 @@
 #include "physicsobject.h"
 
 #include "ofxAssimpModelLoader.h"
-#include "ofxSkyBox.h"
 
 class ofApp : public ofBaseApp{
 
@@ -33,7 +32,6 @@ class ofApp : public ofBaseApp{
         void collide (dGeomID o1, dGeomID o2);
 
         FollowCamera cam;
-        ofxSkyBox skybox;
 
         dWorldID world;
         dSpaceID space;
