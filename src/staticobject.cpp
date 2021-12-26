@@ -2,34 +2,32 @@
 #include "ode/ode.h"
 
 StaticObject::StaticObject(glm::vec3 pos,
-                           glm::vec3 rot,
-                           glm::vec3 scale,
-                           string modelName,
-                           dWorldID w,
-                           dSpaceID s)
+    glm::vec3 rot,
+    glm::vec3 scale,
+    string modelName,
+    dWorldID w,
+    dSpaceID s)
 {
-  this->init(pos, rot, scale, modelName, w, s);
-  this->type = STATIC_OBJECT;
+    this->init(pos, rot, scale, modelName, w, s);
+    this->type = STATIC_OBJECT;
 }
 
-void
-StaticObject::init(glm::vec3 pos,
-                   glm::vec3 rot,
-                   glm::vec3 scale,
-                   string modelName,
-                   dWorldID w,
-                   dSpaceID s)
+void StaticObject::init(glm::vec3 pos,
+    glm::vec3 rot,
+    glm::vec3 scale,
+    string modelName,
+    dWorldID w,
+    dSpaceID s)
 {
     GameObject::init(pos, rot, scale, modelName, w, s);
 }
 
-void
-StaticObject::update()
-{}
-
-void
-StaticObject::draw()
+void StaticObject::update()
 {
-  /* Draw the model: */
-  m_model.drawFaces();
+}
+
+void StaticObject::draw()
+{
+    /* Draw the model: */
+    m_model.drawFaces();
 }
