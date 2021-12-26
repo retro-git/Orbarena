@@ -9,6 +9,12 @@ BulletObject::BulletObject(glm::vec3 pos,
 {
   pos.z += 3;
   this->init(pos, rot, scale, modelName, w, s);
+
+  /* Set up physics objects */
+  m_body = dBodyCreate(w);
+  dBodySetPosition(m_body, pos.x, pos.y, pos.z);
+  dGeomSetBody(m_geom, m_body);
+
   const dReal* playerVelocity = dBodyGetLinearVel(myApp->player->m_body);
 
   glm::vec3 forward = myApp->cam.getLookAtDir();

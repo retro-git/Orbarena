@@ -61,11 +61,6 @@ GameObject::init(glm::vec3 pos,
     m_geom = dCreateTriMesh(s, m_data, 0, 0, 0);
   }
 
-  /* Set up physics objects */
-  m_body = dBodyCreate(w);
-  dBodySetPosition(m_body, pos.x, pos.y, pos.z);
-  dGeomSetBody(m_geom, m_body);
-
   // dMass mass;
   // dMassSetTrimesh(&mass, 5000, m_geom);
 

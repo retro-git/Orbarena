@@ -9,6 +9,11 @@ PhysicsObject::PhysicsObject(glm::vec3 pos,
 {
   this->init(pos, rot, scale, modelName, w, s);
   this->type = PHYSICS_OBJECT;
+
+    /* Set up physics objects */
+    m_body = dBodyCreate(w);
+    dBodySetPosition(m_body, pos.x, pos.y, pos.z);
+    dGeomSetBody(m_geom, m_body);
 }
 
 void
