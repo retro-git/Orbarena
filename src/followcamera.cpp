@@ -27,7 +27,8 @@ void FollowCamera::updateFollowPoint()
     else
     {
         float lerpAlpha = 1;
-        if (auto dist = glm::distance(bodyPos, this->followPoint); dist > 0.1)
+        auto dist = glm::distance(bodyPos, this->followPoint);
+        if (dist > 0.1)
         {
             lerpAlpha = min(pow(0.1, ofGetLastFrameTime()), (double)(followPointRadius / dist));
         }
@@ -63,7 +64,8 @@ void FollowCamera::autoControl()
     float rotationMaxAccelThisFrame = rotationMaxAccel * ofGetLastFrameTime();
 
     auto dirToAngle = [](glm::vec2 dir) {
-        if (float angle = glm::degrees(acos(dir.y)); dir.x >= 0) return angle;
+        float angle = glm::degrees(acos(dir.y));
+        if (dir.x >= 0) return angle;
         else return 360-angle;
     };
 
