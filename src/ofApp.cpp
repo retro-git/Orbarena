@@ -96,13 +96,11 @@ void ofApp::update()
     this->inputMouseVertical = 0;
 
     dSpaceCollide(space, 0, &nearCallback);
-
+    destroyQueuedObjects();
     dWorldStep(world, 0.05);
 
     // remove all contact joints
     dJointGroupEmpty(contactgroup);
-
-    destroyQueuedObjects();
 }
 
 //--------------------------------------------------------------

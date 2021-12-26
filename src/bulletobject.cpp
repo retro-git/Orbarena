@@ -33,24 +33,33 @@ BulletObject::BulletObject(glm::vec3 pos,
 
 void BulletObject::update()
 {
-    /* const dReal* currentVelocity = dBodyGetLinearVel(m_body);
+    /*const dReal* currentVelocity = dBodyGetLinearVel(m_body);
 
+    auto moveTowards = [](float start, float end, float maxAccel) {
+        if (abs(end - start) <= maxAccel)
+            return end;
+        else
+            return start + glm::sign(end - start) * maxAccel;
+    };
 
-   auto moveTowards = [](float start, float end, float maxAccel) {
-     if (abs(end - start) <= maxAccel)
-       return end;
-     else
-       return start + glm::sign(end - start) * maxAccel;
-   };
+    const dReal* playerVelocity = dBodyGetLinearVel(myApp->player->m_body);
 
-   dBodySetLinearVel(
-     m_body,
-     moveTowards(
-       currentVelocity[0], targetVelocity.x, maxAccel * ofGetLastFrameTime()),
-     moveTowards(
-       currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
-     currentVelocity[2]);
-   // GameObject::update();*/
+    glm::vec3 forward = myApp->cam.getLookAtDir();
+    forward.z = 0;
+    glm::normalize(forward);
+    glm::vec3 right = myApp->cam.getSideDir();
+    right.z = 0;
+    glm::normalize(right);
+    targetVelocity = (forward * 2) * maxSpeed;
+
+    dBodySetLinearVel(
+        m_body,
+        moveTowards(
+            currentVelocity[0], targetVelocity.x, maxAccel * ofGetLastFrameTime()),
+        moveTowards(
+            currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
+        currentVelocity[2]);
+    // GameObject::update();*/
 }
 
 void BulletObject::draw()
