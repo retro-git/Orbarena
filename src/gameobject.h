@@ -27,11 +27,12 @@ public:
 
     void setPosition(glm::vec3 pos);
     virtual void update() = 0;
-    virtual void draw() = 0;
+    virtual void draw();
+    virtual void init(glm::vec3 pos, glm::vec3 rot, glm::vec3 scale, string modelName, dWorldID w, dSpaceID s);
 
     std::vector<std::vector<glm::vec3>> vertices;
     std::vector<std::vector<uint>> indices;
 
-    bool debug_draw = true;
+    bool debug_draw = false;
 };
 #endif // GAMEOBJECT_H

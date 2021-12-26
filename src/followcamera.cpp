@@ -5,7 +5,7 @@ FollowCamera::FollowCamera()
 
 }
 
-FollowCamera::FollowCamera(PlayerObject* followObject) : followObject(followObject)
+FollowCamera::FollowCamera(std::shared_ptr<PlayerObject> followObject) : followObject(followObject)
 {
 }
 

@@ -4,15 +4,12 @@
 void ofApp::setup(){
     ofDisableArbTex();
 
-    dMass m;
-
     // create world
     dInitODE2(0);
     world = dWorldCreate();
     space = dHashSpaceCreate (0);
     contactgroup = dJointGroupCreate (0);
     dWorldSetGravity (world,0,0,-0.5);
-    //ground = dCreatePlane (space,0,0,1,0);
 
     dAllocateODEDataForThread(dAllocateMaskAll);
 
@@ -21,28 +18,13 @@ void ofApp::setup(){
     m_light1.lookAt(glm::vec3(0,0,0));
     m_light1.enable();
 
-    for(unsigned int p=0; p<1; p++) {
-        //objects.push_back(new GameObject(ofRandom(-5,5), ofRandom(-5,5), ofRandom(0,10), "Dragon 2.5_dae.dae", world, space) );
-        //objects.push_back(new GameObject(0, 0, 200*(p+1), "Test.dae", world, space) );
-        objects.push_back(new PlayerObject(glm::vec3(0, 0, 25), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space) );
-        objects.push_back(new PlayerObject(glm::vec3(0, 15, 25), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space) );
-    }
+    this->player = std::make_shared<PlayerObject>(glm::vec3(0, 0, 25), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space);
+    objects.push_back(this->player);
+    objects.push_back(std::make_shared<StaticObject>(glm::vec3(0, 15, 1), glm::vec3(90, 180, 90), glm::vec3(5, 50, 50), "testCube.obj", world, space));
+    objects.push_back(std::make_shared<PhysicsObject>(glm::vec3(15, 15, 15), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space));
 
-    //objects.push_back(new StaticObject(glm::vec3(0, 15, 1), glm::vec3(0, 0, 0), "Orbos.dae", world, space));
-    objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 180, 90), glm::vec3(5, 50, 50), "testCube.obj", world, space));
-    //objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 0, 0), glm::vec3(5, 5, 5), "anything.obj", world, space));
-    objects.push_back(new PhysicsObject(glm::vec3(15, 15, 15), glm::vec3(0, 0, 90), glm::vec3(1, 1, 1), "Orbos.dae", world, space));
-    //objects.push_back(new PhysicsObject(glm::vec3(15, 15, 45), glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5), "Dragon 2.5_dae.dae", world, space));
-
-    ofVec3f upVector;
-    upVector.set(0, 0, 1);
-    cam = FollowCamera((PlayerObject*)(this->objects[0]));
-    //cam.setAutoDistance(false);
+    cam = FollowCamera(player);
     cam.setNearClip(0.01);
-    //cam.setPosition(10,10,10);
-    //cam.setOrientation(glm::vec3(40, 0, 0));
-    //cam.lookAt({0,0,0},upVector);
-    //cam.setUpAxis(upVector);
 }
 
 //--------------------------------------------------------------
@@ -183,6 +165,15 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
+    //objects.push_back(new BulletObject(this->objects[0]->pos, glm::vec3(0, 0, 90), glm::vec3(0.5, 0.5, 0.5), "Orbos.dae", world, space));
+    /*glm::vec3 forward = cam.getLookAtDir();
+    //forward.z = 0;
+    glm::normalize(forward);
+    glm::vec3 right = cam.getSideDir();
+    //right.z = 0;
+    glm::normalize(right);
+    dBodySetLinearVel(objects.back()->m_body, forward * 1, )
+    //objects.back()->*/
 
 }
 

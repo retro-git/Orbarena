@@ -11,14 +11,14 @@ class FollowCamera : public ofCamera
 {
 public:
     FollowCamera();
-    FollowCamera(PlayerObject* followObject);
+    FollowCamera(std::shared_ptr<PlayerObject> followObject);
 
     void update();
     void updateFollowPoint();
     bool playerControl();
     void autoControl();
 
-    PlayerObject* followObject;
+    std::shared_ptr<PlayerObject> followObject;
     glm::vec3 followPoint{};
     glm::vec3 prevFollowPoint{};
     glm::vec2 lookAngles = glm::vec2(45, 0);

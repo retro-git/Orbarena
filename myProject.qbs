@@ -12,6 +12,8 @@ Project{
         name: { return FileInfo.baseName(sourceDirectory) }
 
         files: [
+            "src/bulletobject.cpp",
+            "src/bulletobject.h",
             "src/followcamera.cpp",
             "src/followcamera.h",
             "src/gameobject.cpp",

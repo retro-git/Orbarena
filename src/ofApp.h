@@ -7,6 +7,7 @@
 #include "followcamera.h"
 #include "staticobject.h"
 #include "physicsobject.h"
+#include "bulletobject.h"
 
 #include "ofxAssimpModelLoader.h"
 
@@ -38,7 +39,7 @@ class ofApp : public ofBaseApp{
         dJointGroupID contactgroup;
         //dGeomID ground;
 
-        std::vector<GameObject*> objects;
+        std::vector<std::shared_ptr<GameObject>> objects;
 
         /* A light */
         ofLight m_light1;
@@ -49,6 +50,8 @@ class ofApp : public ofBaseApp{
         float inputHorizontal{};
         float inputMouseVertical{};
         float inputMouseHorizontal{};
+
+        std::shared_ptr<PlayerObject> player;
 		
 };
 
