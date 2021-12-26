@@ -1,208 +1,307 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofApp::setup(){
-    ofDisableArbTex();
-
-    // create world
-    dInitODE2(0);
-    world = dWorldCreate();
-    space = dHashSpaceCreate (0);
-    contactgroup = dJointGroupCreate (0);
-    dWorldSetGravity (world,0,0,-0.5);
-
-    dAllocateODEDataForThread(dAllocateMaskAll);
-
-    /* The light */
-    m_light1.setPosition(0,0,15);
-    m_light1.lookAt(glm::vec3(0,0,0));
-    m_light1.enable();
-
-    this->player = std::make_shared<PlayerObject>(glm::vec3(0, 0, 25), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space);
-    objects.push_back(this->player);
-    objects.push_back(std::make_shared<StaticObject>(glm::vec3(0, 15, 1), glm::vec3(90, 180, 90), glm::vec3(5, 50, 50), "testCube.obj", world, space));
-    objects.push_back(std::make_shared<PhysicsObject>(glm::vec3(15, 15, 15), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space));
-
-    cam = FollowCamera(player);
-    cam.setNearClip(0.01);
-}
-
-//--------------------------------------------------------------
-void ofApp::update(){
-    for(auto x: objects) x->update();
-
-    cam.update();
-
-    this->inputMouseHorizontal = 0;
-    this->inputMouseVertical = 0;
-
-    dSpaceCollide (space,0,&nearCallback);
-
-    dWorldStep (world,0.05);
-
-    // remove all contact joints
-    dJointGroupEmpty (contactgroup);
-}
-
-//--------------------------------------------------------------
-void ofApp::draw(){
-
-    ofBackground(20);
-    cam.begin();
-
-    ofEnableDepthTest();
-
-    for(auto x: objects) x->draw();
-
-    ofDisableDepthTest();
-    cam.end();
-
-   // ofDrawBitmapString("Hello World", ofGetWindowWidth() /2, ofGetWindowHeight() /2);
-}
-
-void ofApp::collide(dGeomID o1, dGeomID o2)
+void
+ofApp::setup()
 {
-  int i,n;
+  ofDisableArbTex();
 
-  // only collide things with the ground
-  //int g1 = (o1 == ground);
-  //int g2 = (o2 == ground);
-  //if (!(g1 ^ g2)) return;
+  // create world
+  dInitODE2(0);
+  world = dWorldCreate();
+  space = dHashSpaceCreate(0);
+  contactgroup = dJointGroupCreate(0);
+  dWorldSetGravity(world, 0, 0, -0.5);
 
-  //if (this->objects[0]->m_geom == o1 && this->objects[1]->m_geom == o2 || this->objects[0]->m_geom == o2 && this->objects[1]->m_geom == o1 ) {
-  //    ofLog(OF_LOG_NOTICE, "DRAGONS");
-  //}
+  dAllocateODEDataForThread(dAllocateMaskAll);
+
+  /* The light */
+  m_light1.setPosition(0, 0, 15);
+  m_light1.lookAt(glm::vec3(0, 0, 0));
+  m_light1.enable();
+
+  this->player = std::dynamic_pointer_cast<PlayerObject>(
+    createObject<PlayerObject>(glm::vec3(0, 0, 25),
+                               glm::vec3(0, 0, 0),
+                               glm::vec3(1, 1, 1),
+                               "Orbos.dae",
+                               world,
+                               space));
+
+  createObject<StaticObject>(glm::vec3(0, 15, 1),
+                             glm::vec3(90, 180, 90),
+                             glm::vec3(5, 50, 50),
+                             "testCube.obj",
+                             world,
+                             space);
+  createObject<PhysicsObject>(glm::vec3(15, 15, 15),
+                              glm::vec3(0, 0, 0),
+                              glm::vec3(1, 1, 1),
+                              "Orbos.dae",
+                              world,
+                              space);
+
+  cam = FollowCamera(player);
+  cam.setNearClip(0.01);
+}
+
+template<typename T>
+std::shared_ptr<GameObject>
+ofApp::createObject(glm::vec3 pos,
+                    glm::vec3 rot,
+                    glm::vec3 scale,
+                    string modelName,
+                    dWorldID w,
+                    dSpaceID s)
+{
+  std::shared_ptr<GameObject> obj =
+    std::make_shared<T>(pos, rot, scale, modelName, w, s);
+  objects.push_back(obj);
+
+  geomObjectMap.insert({ objects.back()->m_geom, objects.back() });
+
+  return obj;
+}
+
+void
+ofApp::destroyQueuedObjects()
+{
+  for (auto& obj : objectsDestroyQueue) {
+    destroyObject(obj);
+  }
+  objectsDestroyQueue.clear();
+}
+
+void
+ofApp::destroyObject(std::shared_ptr<GameObject> obj)
+{
+  dGeomDestroy(obj->m_geom);
+  dGeomTriMeshDataDestroy(obj->m_data);
+
+  if (obj->type != STATIC_OBJECT) {
+    dBodyDestroy(obj->m_body);
+  }
+
+  geomObjectMap.erase(obj->m_geom);
+
+  auto it = find(objects.begin(), objects.end(), obj);
+  objects.erase(it);
+}
+
+//--------------------------------------------------------------
+void
+ofApp::update()
+{
+  for (auto x : objects)
+    x->update();
+
+  cam.update();
+
+  this->inputMouseHorizontal = 0;
+  this->inputMouseVertical = 0;
+
+  dSpaceCollide(space, 0, &nearCallback);
+
+  dWorldStep(world, 0.05);
+
+  // remove all contact joints
+  dJointGroupEmpty(contactgroup);
+
+  destroyQueuedObjects();
+}
+
+//--------------------------------------------------------------
+void
+ofApp::draw()
+{
+  ofBackground(20);
+  cam.begin();
+
+  ofEnableDepthTest();
+
+  for (auto x : objects)
+    x->draw();
+
+  ofDisableDepthTest();
+  cam.end();
+
+  // ofDrawBitmapString("Hello World", ofGetWindowWidth() /2,
+  // ofGetWindowHeight() /2);
+}
+
+void
+ofApp::collide(dGeomID o1, dGeomID o2)
+{
+  auto obj1 = geomObjectMap.at(o1);
+  auto obj2 = geomObjectMap.at(o2);
+  /* if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) &&
+   (obj1->type != PLAYER_OBJECT && obj2->type != PLAYER_OBJECT))
+   {
+     if (obj1->type == BULLET_OBJECT) objectsDestroyQueue.push_back(obj1);
+     if (obj2->type == BULLET_OBJECT) objectsDestroyQueue.push_back(obj2);
+     return;
+   }*/
 
   const int N = 10;
   dContact contact[N];
-  n = dCollide (o1,o2,N,&contact[0].geom,sizeof(dContact));
+  int n = dCollide(o1, o2, N, &contact[0].geom, sizeof(dContact));
   if (n > 0) {
-    for (i=0; i<n; i++) {
+    for (int i = 0; i < n; i++) {
+      if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) &&
+          (obj1->type == STATIC_OBJECT || obj2->type == STATIC_OBJECT)) {
+        // ofLog() << contact[i].geom.normal[0];
+        // ofLog() << contact[i].geom.normal[1];
+        ofLog() << contact[i].geom.normal[2];
+        if (contact[i].geom.normal[2] < 0.7f) {
+          if (obj1->type == BULLET_OBJECT)
+            objectsDestroyQueue.push_back(obj1);
+          if (obj2->type == BULLET_OBJECT)
+            objectsDestroyQueue.push_back(obj2);
+          return;
+        }
+      }
+      // contact[i].geom.normal
       contact[i].surface.mode = dContactSlip1 | dContactSlip2 |
-        dContactSoftERP | dContactSoftCFM | dContactApprox1;
+                                dContactSoftERP | dContactSoftCFM |
+                                dContactApprox1;
       contact[i].surface.mu = 0.08;
       contact[i].surface.slip1 = 0.1;
       contact[i].surface.slip2 = 0.1;
       contact[i].surface.soft_erp = 0.5;
       contact[i].surface.soft_cfm = 0.3;
-      dJointID c = dJointCreateContact (world,contactgroup,&contact[i]);
-      dJointAttach (c,
-                    dGeomGetBody(contact[i].geom.g1),
-                    dGeomGetBody(contact[i].geom.g2));
+      dJointID c = dJointCreateContact(world, contactgroup, &contact[i]);
+      dJointAttach(
+        c, dGeomGetBody(contact[i].geom.g1), dGeomGetBody(contact[i].geom.g2));
     }
   }
 }
 
-static void nearCallback (void *, dGeomID o1, dGeomID o2) {
-    myApp->collide(o1,o2);
+static void
+nearCallback(void*, dGeomID o1, dGeomID o2)
+{
+  myApp->collide(o1, o2);
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-    switch(key) {
-    case 'w': case 'W':
+void
+ofApp::keyPressed(int key)
+{
+  switch (key) {
+    case 'w':
+    case 'W':
       this->inputVertical = 1;
       break;
-    case 'a': case 'A':
-        this->inputHorizontal = -1;
+    case 'a':
+    case 'A':
+      this->inputHorizontal = -1;
       break;
-    case 's': case 'S':
-        this->inputVertical = -1;
+    case 's':
+    case 'S':
+      this->inputVertical = -1;
       break;
-    case 'd': case 'D':
-        this->inputHorizontal = 1;
+    case 'd':
+    case 'D':
+      this->inputHorizontal = 1;
       break;
     case 'q':
-        ofExit();
-        break;
-    }
+      ofExit();
+      break;
+  }
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-    switch(key) {
-    case 'w': case 'W':
+void
+ofApp::keyReleased(int key)
+{
+  switch (key) {
+    case 'w':
+    case 'W':
       this->inputVertical = 0;
       break;
-    case 'a': case 'A':
-        this->inputHorizontal = 0;
+    case 'a':
+    case 'A':
+      this->inputHorizontal = 0;
       break;
-    case 's': case 'S':
-        this->inputVertical = 0;
+    case 's':
+    case 'S':
+      this->inputVertical = 0;
       break;
-    case 'd': case 'D':
-        this->inputHorizontal = 0;
+    case 'd':
+    case 'D':
+      this->inputHorizontal = 0;
       break;
-    case 'f': case 'F':
-        this->cam.lookAngles.x += 1;
+    case 'f':
+    case 'F':
+      this->cam.lookAngles.x += 1;
       break;
-    case 'g': case 'G':
-        this->cam.lookAngles.y += 1;
+    case 'g':
+    case 'G':
+      this->cam.lookAngles.y += 1;
       break;
     case 'q':
-        ofExit();
-        break;
-    }
+      ofExit();
+      break;
+  }
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-    auto curMousePosition = glm::vec2(x, y);
-    glm::vec2 delta = glm::vec2(x, y) - prevMousePosition;
-    if (glm::length(delta) > 60.f) {
-        prevMousePosition = curMousePosition;
-        return;
-    }
-    this->inputMouseHorizontal = delta.x;
-    this->inputMouseVertical = delta.y;
+void
+ofApp::mouseMoved(int x, int y)
+{
+  auto curMousePosition = glm::vec2(x, y);
+  glm::vec2 delta = glm::vec2(x, y) - prevMousePosition;
+  if (glm::length(delta) > 60.f) {
     prevMousePosition = curMousePosition;
+    return;
+  }
+  this->inputMouseHorizontal = delta.x;
+  this->inputMouseVertical = delta.y;
+  prevMousePosition = curMousePosition;
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
+void
+ofApp::mouseDragged(int x, int y, int button)
+{}
 
+//--------------------------------------------------------------
+void
+ofApp::mousePressed(int x, int y, int button)
+{
+  createObject<BulletObject>(player->pos,
+                             glm::vec3(0, 0, 90),
+                             glm::vec3(0.5, 0.5, 0.5),
+                             "Orbos.dae",
+                             world,
+                             space);
 }
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-    //objects.push_back(new BulletObject(this->objects[0]->pos, glm::vec3(0, 0, 90), glm::vec3(0.5, 0.5, 0.5), "Orbos.dae", world, space));
-    /*glm::vec3 forward = cam.getLookAtDir();
-    //forward.z = 0;
-    glm::normalize(forward);
-    glm::vec3 right = cam.getSideDir();
-    //right.z = 0;
-    glm::normalize(right);
-    dBodySetLinearVel(objects.back()->m_body, forward * 1, )
-    //objects.back()->*/
-
-}
+void
+ofApp::mouseReleased(int x, int y, int button)
+{}
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
+void
+ofApp::mouseEntered(int x, int y)
+{}
 
 //--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
+void
+ofApp::mouseExited(int x, int y)
+{}
 
 //--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
+void
+ofApp::windowResized(int w, int h)
+{}
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void
+ofApp::gotMessage(ofMessage msg)
+{}
 
-}
+//--------------------------------------------------------------
+void
+ofApp::dragEvent(ofDragInfo dragInfo)
+{}

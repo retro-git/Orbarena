@@ -1,0 +1,12 @@
+#ifndef OBJECTTYPE_H
+#define OBJECTTYPE_H
+
+enum ObjectType
+{
+  PLAYER_OBJECT,
+  PHYSICS_OBJECT,
+  STATIC_OBJECT,
+  BULLET_OBJECT
+};
+
+#endif // OBJECTTYPE_H

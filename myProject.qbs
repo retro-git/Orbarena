@@ -18,6 +18,7 @@ Project{
             "src/followcamera.h",
             "src/gameobject.cpp",
             "src/gameobject.h",
+            "src/objecttype.h",
             "src/physicsobject.cpp",
             "src/physicsobject.h",
             "src/playerobject.cpp",
