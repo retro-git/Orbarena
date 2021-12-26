@@ -77,7 +77,7 @@ OF_ROOT = /home/retro/code/gamescw/of_v0.11.2_linux64gcc6_release
 # incorporated directly into the final executable application binary.
 ################################################################################
 # PROJECT_LDFLAGS=-Wl,-rpath=./libs
-
+PROJECT_LDFLAGS = -lode -static
 ################################################################################
 # PROJECT DEFINES
 #   Create a space-delimited list of DEFINES. The list will be converted into 
@@ -139,3 +139,4 @@ OF_ROOT = /home/retro/code/gamescw/of_v0.11.2_linux64gcc6_release
 ################################################################################
 # PROJECT_CXX = 
 # PROJECT_CC = 
+PROJECT_LDFLAGS = -lode

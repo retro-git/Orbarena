@@ -42,7 +42,7 @@ bool FollowCamera::playerControl()
         if (lookAngles.y < 0) lookAngles.y += 360;
         else if (lookAngles.y >= 360) lookAngles.y -= 360;
 
-        this->lookAngles.x = clamp(lookAngles.x, 15.f, 90.f);
+        this->lookAngles.x = glm::clamp(lookAngles.x, 15.f, 90.f);
         this->lastPlayerControlTimestamp = ofGetElapsedTimef();
         //ofLog() << lookAngles.x;
         //ofLog() << lookAngles.x;

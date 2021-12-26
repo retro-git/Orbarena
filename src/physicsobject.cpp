@@ -33,8 +33,8 @@ PhysicsObject::PhysicsObject(glm::vec3 pos, glm::vec3 rot, glm::vec3 scale, stri
         for (auto& vec : this->vertices.at(i)) vec = transformMatrix * glm::vec4(vec, 1.f);
 
         dTriMeshDataID data = dGeomTriMeshDataCreate();
-        dGeomTriMeshDataBuildSingle(data, &this->vertices.at(i).at(0), 3 * sizeof(float), std::size(this->vertices.at(i)),
-                                    &this->indices.at(i).at(0), std::size(this->indices.at(i)), 3 * sizeof(this->indices.at(0).at(0)));
+        dGeomTriMeshDataBuildSingle(data, &this->vertices.at(i).at(0), 3 * sizeof(float), this->vertices.at(i).size(),
+                                    &this->indices.at(i).at(0), this->indices.at(i).size(), 3 * sizeof(this->indices.at(0).at(0)));
 
         m_geom = dCreateTriMesh(s, data, 0, 0, 0);
     }

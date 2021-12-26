@@ -31,7 +31,7 @@ void ofApp::setup(){
     //objects.push_back(new StaticObject(glm::vec3(0, 15, 1), glm::vec3(0, 0, 0), "Orbos.dae", world, space));
     objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 180, 90), glm::vec3(5, 50, 50), "testCube.obj", world, space));
     //objects.push_back(new StaticObject(glm::vec3(0, 0, 0), glm::vec3(90, 0, 0), glm::vec3(5, 5, 5), "anything.obj", world, space));
-    objects.push_back(new PhysicsObject(glm::vec3(15, 15, 15), glm::vec3(0, 0, 90), glm::vec3(1, 1, 1), "geom.obj", world, space));
+    objects.push_back(new PhysicsObject(glm::vec3(15, 15, 15), glm::vec3(0, 0, 90), glm::vec3(1, 1, 1), "Orbos.dae", world, space));
     //objects.push_back(new PhysicsObject(glm::vec3(15, 15, 45), glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5), "Dragon 2.5_dae.dae", world, space));
 
     ofVec3f upVector;
