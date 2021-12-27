@@ -1,4 +1,5 @@
 #include "bulletobject.h"
+#include "utils.h"
 
 BulletObject::BulletObject(glm::vec3 pos,
     glm::vec3 rot,
@@ -8,12 +9,7 @@ BulletObject::BulletObject(glm::vec3 pos,
     dSpaceID s)
 {
     pos.z += 3;
-    this->init(pos, rot, scale, modelName, w, s);
-
-    /* Set up physics objects */
-    m_body = dBodyCreate(w);
-    dBodySetPosition(m_body, pos.x, pos.y, pos.z);
-    dGeomSetBody(m_geom, m_body);
+    this->init(pos, rot, scale, modelName, true, w, s);
 
     const dReal* playerVelocity = dBodyGetLinearVel(myApp->player->m_body);
 
@@ -35,13 +31,6 @@ void BulletObject::update()
 {
     /*const dReal* currentVelocity = dBodyGetLinearVel(m_body);
 
-    auto moveTowards = [](float start, float end, float maxAccel) {
-        if (abs(end - start) <= maxAccel)
-            return end;
-        else
-            return start + glm::sign(end - start) * maxAccel;
-    };
-
     const dReal* playerVelocity = dBodyGetLinearVel(myApp->player->m_body);
 
     glm::vec3 forward = myApp->cam.getLookAtDir();
@@ -54,11 +43,11 @@ void BulletObject::update()
 
     dBodySetLinearVel(
         m_body,
-        moveTowards(
+        Utils::moveTowards(
             currentVelocity[0], targetVelocity.x, maxAccel * ofGetLastFrameTime()),
-        moveTowards(
+        Utils::moveTowards(
             currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
-        currentVelocity[2]);
+        Utils::currentVelocity[2]);
     // GameObject::update();*/
 }
 

@@ -8,6 +8,7 @@
 #include "physicsobject.h"
 #include "playerobject.h"
 #include "staticobject.h"
+#include "trackplayerobject.h"
 #include <unordered_map>
 
 #include "ofxAssimpModelLoader.h"

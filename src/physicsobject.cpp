@@ -7,13 +7,8 @@ PhysicsObject::PhysicsObject(glm::vec3 pos,
     dWorldID w,
     dSpaceID s)
 {
-    this->init(pos, rot, scale, modelName, w, s);
+    this->init(pos, rot, scale, modelName, true, w, s);
     this->type = PHYSICS_OBJECT;
-
-    /* Set up physics objects */
-    m_body = dBodyCreate(w);
-    dBodySetPosition(m_body, pos.x, pos.y, pos.z);
-    dGeomSetBody(m_geom, m_body);
 }
 
 void PhysicsObject::update()

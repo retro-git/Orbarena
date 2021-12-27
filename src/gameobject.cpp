@@ -10,6 +10,7 @@ void GameObject::init(glm::vec3 pos,
     glm::vec3 rot,
     glm::vec3 scale,
     string modelName,
+    bool bBody,
     dWorldID w,
     dSpaceID s)
 {
@@ -52,6 +53,13 @@ void GameObject::init(glm::vec3 pos,
             3 * sizeof(this->indices.at(0).at(0)));
 
         m_geom = dCreateTriMesh(s, m_data, 0, 0, 0);
+    }
+
+    if (bBody) {
+        /* Set up physics objects */
+        m_body = dBodyCreate(w);
+        dBodySetPosition(m_body, pos.x, pos.y, pos.z);
+        dGeomSetBody(m_geom, m_body);
     }
 
     // dMass mass;

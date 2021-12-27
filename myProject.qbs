@@ -28,6 +28,10 @@ Project{
             "src/ofApp.h",
             "src/staticobject.cpp",
             "src/staticobject.h",
+            "src/trackplayerobject.cpp",
+            "src/trackplayerobject.h",
+            "src/utils.cpp",
+            "src/utils.h",
         ]
 
         // This project is using addons.make to include the addons

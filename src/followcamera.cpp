@@ -1,4 +1,5 @@
 #include "followcamera.h"
+#include "utils.h"
 
 FollowCamera::FollowCamera() {}
 
@@ -67,13 +68,6 @@ void FollowCamera::autoControl()
             return 360 - angle;
     };
 
-    auto moveTowards = [](float start, float end, float maxAccel) {
-        if (abs(end - start) <= maxAccel)
-            return end;
-        else
-            return start + glm::sign(end - start) * maxAccel;
-    };
-
     auto angleDelta = [](float start, float end) {
         float d = fmod(end - start, 360);
         if (d > 180.f)
@@ -82,12 +76,12 @@ void FollowCamera::autoControl()
     };
 
     auto moveTowardsAngle =
-        [&moveTowards, &angleDelta](float start, float end, float maxAccel) {
+        [&angleDelta](float start, float end, float maxAccel) {
             float delta = angleDelta(start, end);
 
             if (-maxAccel < delta && delta < maxAccel)
                 return end;
-            return moveTowards(start, start + delta, maxAccel);
+            return Utils::moveTowards(start, start + delta, maxAccel);
         };
 
     // scale down rotation accel for smaller adjustments

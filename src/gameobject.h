@@ -33,8 +33,10 @@ public:
         glm::vec3 rot,
         glm::vec3 scale,
         string modelName,
+        bool bBody,
         dWorldID w,
         dSpaceID s);
+    void initBody();
 
     std::vector<std::vector<glm::vec3>> vertices;
     std::vector<std::vector<uint>> indices;

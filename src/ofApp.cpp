@@ -33,7 +33,7 @@ void ofApp::setup()
         "testCube.obj",
         world,
         space);
-    createObject<PhysicsObject>(glm::vec3(15, 15, 15),
+    createObject<TrackPlayerObject>(glm::vec3(15, 15, 15),
         glm::vec3(0, 0, 0),
         glm::vec3(1, 1, 1),
         "Orbos.dae",

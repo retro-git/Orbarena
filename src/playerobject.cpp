@@ -1,4 +1,5 @@
 #include "playerobject.h"
+#include "utils.h"
 
 PlayerObject::PlayerObject(glm::vec3 pos,
     glm::vec3 rot,
@@ -7,18 +8,16 @@ PlayerObject::PlayerObject(glm::vec3 pos,
     dWorldID w,
     dSpaceID s)
 {
-    this->init(pos, rot, scale, modelName, w, s);
+    this->init(pos, rot, scale, modelName, true, w, s);
     this->type = PLAYER_OBJECT;
-
-    /* Set up physics objects */
-    m_body = dBodyCreate(w);
-    dBodySetPosition(m_body, pos.x, pos.y, pos.z);
-    dGeomSetBody(m_geom, m_body);
 }
 
 void PlayerObject::update()
 {
     const dReal* currentVelocity = dBodyGetLinearVel(m_body);
+
+    //if (myApp->inputVertical == 0 && myApp->inputHorizontal == 0)
+    // return;
 
     glm::vec3 forward = myApp->cam.getLookAtDir();
     forward.z = 0;
@@ -28,25 +27,11 @@ void PlayerObject::update()
     glm::normalize(right);
     targetVelocity = (forward * myApp->inputVertical + right * myApp->inputHorizontal) * maxSpeed;
 
-    auto moveTowards = [](float start, float end, float maxAccel) {
-        if (abs(end - start) <= maxAccel)
-            return end;
-        else
-            return start + glm::sign(end - start) * maxAccel;
-        /*if (start < end) {
-        return min(start + maxAccel, end);
-    }
-    else if (start > end) {
-        return max(start - maxAccel, end);
-    }
-    else return start;*/
-    };
-
     dBodySetLinearVel(
         m_body,
-        moveTowards(
+        Utils::moveTowards(
             currentVelocity[0], targetVelocity.x, maxAccel * ofGetLastFrameTime()),
-        moveTowards(
+        Utils::moveTowards(
             currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
         currentVelocity[2]);
     // GameObject::update();
