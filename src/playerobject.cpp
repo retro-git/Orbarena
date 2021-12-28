@@ -16,8 +16,8 @@ void PlayerObject::update()
 {
     const dReal* currentVelocity = dBodyGetLinearVel(m_body);
 
-    //if (myApp->inputVertical == 0 && myApp->inputHorizontal == 0)
-    // return;
+    if (myApp->inputVertical == 0 && myApp->inputHorizontal == 0)
+        return;
 
     glm::vec3 forward = myApp->cam.getLookAtDir();
     forward.z = 0;

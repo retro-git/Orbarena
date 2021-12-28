@@ -15,8 +15,8 @@ public:
     virtual void update() override;
     virtual void draw() override;
 
-    float maxSpeed = 3;
-    float maxAccel = 3;
+    float maxSpeed{};
+    float maxAccel{};
 
     glm::vec3 targetVelocity{};
 };

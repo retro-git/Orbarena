@@ -8,7 +8,7 @@ BulletObject::BulletObject(glm::vec3 pos,
     dWorldID w,
     dSpaceID s)
 {
-    pos.z += 3;
+    pos.z += 2.5;
     this->init(pos, rot, scale, modelName, true, w, s);
 
     const dReal* playerVelocity = dBodyGetLinearVel(myApp->player->m_body);
@@ -29,7 +29,7 @@ BulletObject::BulletObject(glm::vec3 pos,
 
 void BulletObject::update()
 {
-    /*const dReal* currentVelocity = dBodyGetLinearVel(m_body);
+    const dReal* currentVelocity = dBodyGetLinearVel(m_body);
 
     const dReal* playerVelocity = dBodyGetLinearVel(myApp->player->m_body);
 
@@ -47,11 +47,12 @@ void BulletObject::update()
             currentVelocity[0], targetVelocity.x, maxAccel * ofGetLastFrameTime()),
         Utils::moveTowards(
             currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
-        Utils::currentVelocity[2]);
-    // GameObject::update();*/
+        currentVelocity[2]);
+    // GameObject::update();
 }
 
 void BulletObject::draw()
 {
     GameObject::draw();
+    //m_model.getMesh(0).setColor();
 }

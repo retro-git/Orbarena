@@ -5,6 +5,7 @@
 #include "gameobject.h"
 #include "ode/ode.h"
 #include "ofMain.h"
+#include "ofxSkyBox.h"
 #include "physicsobject.h"
 #include "playerobject.h"
 #include "staticobject.h"
@@ -54,6 +55,8 @@ public:
     /* A light */
     ofLight m_light1;
 
+    ofxSkyBox skybox;
+
     glm::vec2 prevMousePosition;
 
     float inputVertical{};
@@ -66,6 +69,8 @@ public:
     std::vector<std::shared_ptr<GameObject>> objects;
     std::vector<std::shared_ptr<GameObject>> objectsDestroyQueue;
     std::unordered_map<dGeomID, std::shared_ptr<GameObject>> geomObjectMap;
+
+    ofTrueTypeFont HUDFont;
 };
 
 static void

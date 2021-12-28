@@ -10,6 +10,9 @@ TrackPlayerObject::TrackPlayerObject(glm::vec3 pos,
 {
     this->init(pos, rot, scale, modelName, true, w, s);
     this->type = TRACK_PLAYER_OBJECT;
+
+    this->maxSpeed = ofRandom(5, 10);
+    this->maxAccel = ofRandom(1, 10);
 }
 
 void TrackPlayerObject::update()
@@ -24,7 +27,8 @@ void TrackPlayerObject::update()
     glm::vec3 dirToPlayer = glm::normalize(
         glm::vec3(playerPosition[0], playerPosition[1], playerPosition[2]) - glm::vec3(currentPosition[0], currentPosition[1], currentPosition[2]));
 
-    targetVelocity = dirToPlayer * maxSpeed;
+    targetVelocity = glm::normalize(dirToPlayer + (glm::vec3(ofRandom(-1, 1), ofRandom(-1, 1), 0))) * maxSpeed;
+    //targetVelocity = dirToPlayer * maxSpeed;
 
     dBodySetLinearVel(
         m_body,
@@ -39,4 +43,12 @@ void TrackPlayerObject::update()
 void TrackPlayerObject::draw()
 {
     GameObject::draw();
+    ofPushMatrix();
+
+    ofTranslate(pos.x, pos.y, pos.z - 0.7);
+
+    ofSetColor(25, 0, 0, 60);
+    //ofDrawCircle(0, 0, 6);
+
+    ofPopMatrix();
 }

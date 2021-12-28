@@ -19,6 +19,18 @@ void ofApp::setup()
     m_light1.lookAt(glm::vec3(0, 0, 0));
     m_light1.enable();
 
+    skybox.load();
+
+    HUDFont.load("verdana.ttf", 18, true, true);
+
+    /*this->player = std::dynamic_pointer_cast<PlayerObject>(
+        createObject<PlayerObject>(glm::vec3(0, 0, 25),
+            glm::vec3(0, 0, 0),
+            glm::vec3(1, 1, 1),
+            "Orbos.dae",
+            world,
+            space));*/
+
     this->player = std::dynamic_pointer_cast<PlayerObject>(
         createObject<PlayerObject>(glm::vec3(0, 0, 25),
             glm::vec3(0, 0, 0),
@@ -33,12 +45,24 @@ void ofApp::setup()
         "testCube.obj",
         world,
         space);
-    createObject<TrackPlayerObject>(glm::vec3(15, 15, 15),
+    /*createObject<TrackPlayerObject>(glm::vec3(0, 50, 15),
+        glm::vec3(0, 0, 0),
+        glm::vec3(1, 1, 1),
+        "Orbos.dae",
+        world,
+        space);*/
+    /*createObject<TrackPlayerObject>(glm::vec3(25, 15, 25),
         glm::vec3(0, 0, 0),
         glm::vec3(1, 1, 1),
         "Orbos.dae",
         world,
         space);
+    createObject<TrackPlayerObject>(glm::vec3(-35, -25, 25),
+        glm::vec3(0, 0, 0),
+        glm::vec3(1, 1, 1),
+        "Orbos.dae",
+        world,
+        space);*/
 
     cam = FollowCamera(player);
     cam.setNearClip(0.01);
@@ -106,6 +130,7 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+    ofFill();
     ofBackground(20);
     cam.begin();
 
@@ -114,8 +139,22 @@ void ofApp::draw()
     for (auto x : objects)
         x->draw();
 
-    ofDisableDepthTest();
+    //skybox.draw();
+
     cam.end();
+
+    ofDisableDepthTest();
+
+    ofSetColor(0, 128, 0, 200);
+    string health = "HEALTH:";
+    ofRectangle bounds = HUDFont.getStringBoundingBox(health, 0, 0);
+    HUDFont.drawString(health, (ofGetWidth() / 2) - (bounds.width / 2), ofGetHeight() - 110);
+
+    ofDrawRectangle(ofGetWidth() / 2 - ((this->player->maxHealth) / 2), ofGetHeight() - 100, this->player->curHealth, 50);
+
+    ofNoFill();
+
+    ofDrawRectangle(ofGetWidth() / 2 - ((this->player->maxHealth) / 2), ofGetHeight() - 100, this->player->maxHealth, 50);
 
     // ofDrawBitmapString("Hello World", ofGetWindowWidth() /2,
     // ofGetWindowHeight() /2);

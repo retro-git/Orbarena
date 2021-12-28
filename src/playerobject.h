@@ -18,6 +18,9 @@ public:
     float maxSpeed = 7;
     float maxAccel = 7;
 
+    float maxHealth = 300;
+    float curHealth = maxHealth;
+
     glm::vec3 targetVelocity{};
 };
 
