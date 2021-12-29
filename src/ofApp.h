@@ -84,6 +84,7 @@ public:
     bool resetFlag = false;
 
     bool wallhackPowerup = false;
+    bool menuFlag = true;
 };
 
 static void

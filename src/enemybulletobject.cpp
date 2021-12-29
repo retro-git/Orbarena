@@ -12,6 +12,7 @@ EnemyBulletObject::EnemyBulletObject(glm::vec3 pos,
     this->init(pos, rot, scale, modelName, true, w, s);
     this->type = ENEMY_BULLET_OBJECT;
     this->spawnTime = ofGetElapsedTimef();
+    this->maxSpeed = ofRandom(3, myApp->waveCounter * 3);
 
     const dReal* currentPosition = dBodyGetPosition(m_body);
     const dReal* playerPosition = dBodyGetPosition(myApp->player->m_body);

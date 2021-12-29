@@ -25,13 +25,13 @@ void ofApp::setup()
         createObject<PlayerObject>(glm::vec3(0, 0, 25),
             glm::vec3(0, 0, 0),
             glm::vec3(1, 1, 1),
-            "Orbos.dae",
+            "PlayerOrb.obj",
             world,
             space));
 
     createObject<StaticObject>(glm::vec3(0, 0, 0),
         glm::vec3(90, 0, 0),
-        glm::vec3(10, 10, 10),
+        glm::vec3(15, 15, 15),
         "arena/Orb world.obj",
         world,
         space);
@@ -51,7 +51,7 @@ void ofApp::startNextWave()
     //ofLog() << ceil(waveCounter / 2);
     //ofLog() << numEnemies;
     for (int i = 0; i < numEnemies; i++) {
-        objectsCreateQueue.push_back({ TRACK_PLAYER_OBJECT, glm::vec3(ofRandom(0, 25), ofRandom(0, 25), 15), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space });
+        objectsCreateQueue.push_back({ TRACK_PLAYER_OBJECT, glm::vec3(ofRandom(0, 25), ofRandom(0, 25), 15), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "EnemyOrb.obj", world, space });
     }
 }
 
@@ -133,6 +133,8 @@ void ofApp::destroyObject(std::shared_ptr<GameObject> obj)
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    if (menuFlag)
+        return;
     if (numEnemies == 0)
         startNextWave();
 
@@ -167,6 +169,37 @@ void ofApp::draw()
 {
     ofFill();
     ofBackground(20);
+    if (menuFlag) {
+        ofDisableAlphaBlending();
+        ofSetColor(0xffffff);
+        auto offset = 34;
+        string str = "WELCOME TO ORB ARENA!";
+        ofRectangle bounds = HUDFont.getStringBoundingBox(str, 0, 0);
+        HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset);
+        str = "KILL ALL THE ENEMIES TO PROGRESS TO THE NEXT WAVE.";
+        bounds = HUDFont.getStringBoundingBox(str, 0, 0);
+        HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset * 4);
+        str = "SURVIVE AS LONG AS POSSIBLE AND ACHIEVE HIGH SCORES.";
+        bounds = HUDFont.getStringBoundingBox(str, 0, 0);
+        HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset * 7);
+        str = "MOVE WITH WASD. SHOOT WITH LEFT MOUSE CLICK.";
+        bounds = HUDFont.getStringBoundingBox(str, 0, 0);
+        HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset * 10);
+        str = "CONTROL CAMERA WITH MOUSE, OR ALLOW IT TO AUTO CONTROL ITSELF.";
+        bounds = HUDFont.getStringBoundingBox(str, 0, 0);
+        HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset * 13);
+        str = "PRESS Q TO QUIT. PRESS H TO ENABLE WALLHACK POWERUP (PROTOTYPE).";
+        bounds = HUDFont.getStringBoundingBox(str, 0, 0);
+        HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset * 16);
+        str = "PRESS C WHILE PLAYING TO ENTER THIS SCREEN AGAIN.";
+        bounds = HUDFont.getStringBoundingBox(str, 0, 0);
+        HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset * 19);
+        str = "PRESS C NOW TO START PLAYING!";
+        bounds = HUDFont.getStringBoundingBox(str, 0, 0);
+        HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset * 22);
+        return;
+    }
+
     cam.begin();
 
     ofEnableDepthTest();
@@ -317,6 +350,11 @@ void ofApp::keyPressed(int key)
     case 'H':
         this->wallhackPowerup = !wallhackPowerup;
         break;
+    case 'c':
+    case 'C':
+        this->menuFlag = !menuFlag;
+        break;
+    case 'Q':
     case 'q':
         ofExit();
         break;

@@ -15,8 +15,8 @@ public:
     virtual void update() override;
     virtual void draw() override;
 
-    float maxSpeed = 3;
-    float maxAccel = 10;
+    float maxSpeed{};
+    float maxAccel{};
 
     float spawnTime = 0;
     float despawnSeconds = 30;

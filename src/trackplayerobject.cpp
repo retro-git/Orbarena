@@ -13,8 +13,8 @@ TrackPlayerObject::TrackPlayerObject(glm::vec3 pos,
     this->init(pos, rot, scale, modelName, true, w, s);
     this->type = TRACK_PLAYER_OBJECT;
 
-    this->maxSpeed = ofRandom(1, 3);
-    this->maxAccel = ofRandom(1, 3);
+    this->maxSpeed = ofRandom(1, myApp->waveCounter * 2);
+    this->maxAccel = ofRandom(1, myApp->waveCounter * 2);
 
     lastBulletSpawnTimestamp = ofGetElapsedTimef();
 }
