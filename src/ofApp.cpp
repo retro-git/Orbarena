@@ -193,6 +193,23 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
                     return;
                 }
             }
+            if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) && (obj1->type == TRACK_PLAYER_OBJECT || obj2->type == TRACK_PLAYER_OBJECT)) {
+                if (obj1->type == TRACK_PLAYER_OBJECT) {
+                    std::dynamic_pointer_cast<TrackPlayerObject>(obj1)->curHealth -= 10;
+                    if (std::dynamic_pointer_cast<TrackPlayerObject>(obj1)->curHealth <= 0)
+                        objectsDestroyQueue.push_back(obj1);
+                }
+                if (obj2->type == TRACK_PLAYER_OBJECT) {
+                    std::dynamic_pointer_cast<TrackPlayerObject>(obj2)->curHealth -= 10;
+                    if (std::dynamic_pointer_cast<TrackPlayerObject>(obj2)->curHealth <= 0)
+                        objectsDestroyQueue.push_back(obj2);
+                }
+                if (obj1->type == BULLET_OBJECT)
+                    objectsDestroyQueue.push_back(obj1);
+                if (obj2->type == BULLET_OBJECT)
+                    objectsDestroyQueue.push_back(obj2);
+                return;
+            }
             // contact[i].geom.normal
             contact[i].surface.mode = dContactSlip1 | dContactSlip2 | dContactSoftERP | dContactSoftCFM | dContactApprox1;
             contact[i].surface.mu = 0.08;

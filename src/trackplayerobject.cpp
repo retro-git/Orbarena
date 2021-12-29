@@ -60,9 +60,9 @@ void TrackPlayerObject::draw()
 
     ofDrawRectangle(0, 0 - (this->maxHealth / 40), 0, 1, this->maxHealth / 20);
 
-    this->curHealth -= 1;
+    /*this->curHealth -= 1;
     if (this->curHealth <= 0)
-        this->curHealth = this->maxHealth;
+        this->curHealth = this->maxHealth;*/
 
     ofFill();
 
