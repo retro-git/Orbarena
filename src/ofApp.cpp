@@ -43,6 +43,8 @@ void ofApp::setup()
 void ofApp::startNextWave()
 {
     waveCounter++;
+    if (waveCounter > highScore)
+        highScore = waveCounter;
 
     numEnemies = ceil(ofRandom(ceil(waveCounter / 2), waveCounter));
     ofLog() << ceil(waveCounter / 2);
@@ -149,6 +151,15 @@ void ofApp::update()
 
     destroyQueuedObjects();
     createQueuedObjects();
+
+    if (resetFlag) {
+        numEnemies = 0;
+        waveCounter = 0;
+        player->targetHealth = player->maxHealth;
+        player->curHealth = player->maxHealth;
+        dBodySetPosition(player->m_body, 0, 0, 25);
+        resetFlag = false;
+    }
 }
 
 //--------------------------------------------------------------
@@ -165,15 +176,28 @@ void ofApp::draw()
 
     cam.end();
 
+    drawHud();
+}
+
+void ofApp::drawHud()
+{
     ofDisableDepthTest();
 
     ofSetColor(255, 255, 200, 255);
     string wave = "WAVE: " + std::to_string(waveCounter);
     HUDFont.drawString(wave, 10, 30);
 
+    string enemies = "ENEMIES REMAINING: " + std::to_string(numEnemies);
+    ofRectangle bounds = HUDFont.getStringBoundingBox(enemies, 0, 0);
+    HUDFont.drawString(enemies, (ofGetWidth() / 2) - (bounds.width / 2), 30);
+
+    string score = "HIGH SCORE: " + std::to_string(highScore);
+    bounds = HUDFont.getStringBoundingBox(score, 0, 0);
+    HUDFont.drawString(score, ofGetWidth() - (bounds.width + 10), 30);
+
     ofSetColor(0, 128, 0, 200);
     string health = "HEALTH:";
-    ofRectangle bounds = HUDFont.getStringBoundingBox(health, 0, 0);
+    bounds = HUDFont.getStringBoundingBox(health, 0, 0);
     HUDFont.drawString(health, (ofGetWidth() / 2) - (bounds.width / 2), ofGetHeight() - 110);
 
     ofDrawRectangle(ofGetWidth() / 2 - ((this->player->maxHealth) / 2), ofGetHeight() - 100, this->player->curHealth, 50);
@@ -182,8 +206,16 @@ void ofApp::draw()
 
     ofDrawRectangle(ofGetWidth() / 2 - ((this->player->maxHealth) / 2), ofGetHeight() - 100, this->player->maxHealth, 50);
 
-    // ofDrawBitmapString("Hello World", ofGetWindowWidth() /2,
-    // ofGetWindowHeight() /2);
+    if (player->curHealth <= 0) {
+        ofSetColor(255, 0, 0, 255);
+        string died = "YOU DIED! YOU MADE IT TO WAVE " + std::to_string(waveCounter) + "!";
+        bounds = HUDFont.getStringBoundingBox(died, 0, 0);
+        HUDFont.drawString(died, (ofGetWidth() / 2) - (bounds.width / 2), ofGetHeight() / 3);
+
+        string restart = "PRESS R TO RESTART!";
+        bounds = HUDFont.getStringBoundingBox(restart, 0, 0);
+        HUDFont.drawString(restart, (ofGetWidth() / 2) - (bounds.width / 2), ofGetHeight() / 2);
+    }
 }
 
 void ofApp::collide(dGeomID o1, dGeomID o2)
@@ -276,6 +308,14 @@ void ofApp::keyPressed(int key)
     case 'd':
     case 'D':
         this->inputHorizontal = 1;
+        break;
+    case 'r':
+    case 'R':
+        this->resetFlag = true;
+        break;
+    case 'h':
+    case 'H':
+        this->wallhackPowerup = !wallhackPowerup;
         break;
     case 'q':
         ofExit();

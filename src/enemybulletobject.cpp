@@ -11,6 +11,7 @@ EnemyBulletObject::EnemyBulletObject(glm::vec3 pos,
     pos.z += 2.5;
     this->init(pos, rot, scale, modelName, true, w, s);
     this->type = ENEMY_BULLET_OBJECT;
+    this->spawnTime = ofGetElapsedTimef();
 
     const dReal* currentPosition = dBodyGetPosition(m_body);
     const dReal* playerPosition = dBodyGetPosition(myApp->player->m_body);
@@ -25,6 +26,12 @@ EnemyBulletObject::EnemyBulletObject(glm::vec3 pos,
 
 void EnemyBulletObject::update()
 {
+    if (myApp->resetFlag || ofGetElapsedTimef() - spawnTime > despawnSeconds) {
+        auto obj = myApp->geomObjectMap.at(m_geom.at(0));
+        if (find(myApp->objectsDestroyQueue.begin(), myApp->objectsDestroyQueue.end(), obj) == myApp->objectsDestroyQueue.end()) {
+            myApp->objectsDestroyQueue.push_back(obj);
+        }
+    }
     /*const dReal* currentVelocity = dBodyGetLinearVel(m_body);
 
     //if (myApp->inputVertical == 0 && myApp->inputHorizontal == 0)

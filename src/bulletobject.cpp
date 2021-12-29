@@ -10,6 +10,8 @@ BulletObject::BulletObject(glm::vec3 pos,
 {
     pos.z += 2.5;
     this->init(pos, rot, scale, modelName, true, w, s);
+    this->type = BULLET_OBJECT;
+    this->spawnTime = ofGetElapsedTimef();
 
     const dReal* playerVelocity = dBodyGetLinearVel(myApp->player->m_body);
 
@@ -23,12 +25,17 @@ BulletObject::BulletObject(glm::vec3 pos,
 
     dBodySetLinearVel(
         m_body, targetVelocity.x, targetVelocity.y, targetVelocity.z);
-
-    this->type = BULLET_OBJECT;
 }
 
 void BulletObject::update()
 {
+    if (myApp->resetFlag || ofGetElapsedTimef() - spawnTime > despawnSeconds) {
+        auto obj = myApp->geomObjectMap.at(m_geom.at(0));
+        if (find(myApp->objectsDestroyQueue.begin(), myApp->objectsDestroyQueue.end(), obj) == myApp->objectsDestroyQueue.end()) {
+            myApp->objectsDestroyQueue.push_back(obj);
+        }
+    }
+
     const dReal* currentVelocity = dBodyGetLinearVel(m_body);
 
     const dReal* playerVelocity = dBodyGetLinearVel(myApp->player->m_body);

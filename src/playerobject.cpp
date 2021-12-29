@@ -14,6 +14,12 @@ PlayerObject::PlayerObject(glm::vec3 pos,
 
 void PlayerObject::update()
 {
+    if (curHealth <= 0) {
+        curHealth = 0;
+        dBodySetLinearVel(m_body, 0, 0, 0);
+        return;
+    }
+
     curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());
 
     const dReal* currentVelocity = dBodyGetLinearVel(m_body);
@@ -40,5 +46,7 @@ void PlayerObject::update()
 
 void PlayerObject::draw()
 {
+    if (curHealth <= 0)
+        return;
     GameObject::draw();
 }

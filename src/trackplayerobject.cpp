@@ -15,10 +15,19 @@ TrackPlayerObject::TrackPlayerObject(glm::vec3 pos,
 
     this->maxSpeed = ofRandom(1, 3);
     this->maxAccel = ofRandom(1, 3);
+
+    lastBulletSpawnTimestamp = ofGetElapsedTimef();
 }
 
 void TrackPlayerObject::update()
 {
+    if (myApp->resetFlag) {
+        auto obj = myApp->geomObjectMap.at(m_geom.at(0));
+        if (find(myApp->objectsDestroyQueue.begin(), myApp->objectsDestroyQueue.end(), obj) == myApp->objectsDestroyQueue.end()) {
+            myApp->objectsDestroyQueue.push_back(obj);
+        }
+    }
+
     const dReal* currentVelocity = dBodyGetLinearVel(m_body);
 
     //if (myApp->inputVertical == 0 && myApp->inputHorizontal == 0)
@@ -57,6 +66,8 @@ void TrackPlayerObject::update()
 
 void TrackPlayerObject::draw()
 {
+    if (myApp->wallhackPowerup)
+        ofDisableDepthTest();
     GameObject::draw();
 
     ofPushMatrix();
@@ -81,4 +92,7 @@ void TrackPlayerObject::draw()
     ofFill();
 
     ofPopMatrix();
+
+    if (myApp->wallhackPowerup)
+        ofEnableDepthTest();
 }

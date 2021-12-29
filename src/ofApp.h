@@ -48,6 +48,9 @@ public:
     void collide(dGeomID o1, dGeomID o2);
 
     void startNextWave();
+    void drawHud();
+
+    int highScore{ 0 };
 
     FollowCamera cam;
 
@@ -77,6 +80,10 @@ public:
 
     int waveCounter = 0;
     int numEnemies = 0;
+
+    bool resetFlag = false;
+
+    bool wallhackPowerup = false;
 };
 
 static void

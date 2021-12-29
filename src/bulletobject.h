@@ -18,6 +18,9 @@ public:
     float maxSpeed = 5;
     float maxAccel = 5;
 
+    float spawnTime = 0;
+    float despawnSeconds = 30;
+
     glm::vec3 targetVelocity{};
 };
 
