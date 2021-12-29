@@ -43,8 +43,9 @@ void ofApp::setup()
 void ofApp::startNextWave()
 {
     waveCounter++;
-    if (waveCounter > highScore)
+    if (waveCounter > highScore) {
         highScore = waveCounter;
+    }
 
     numEnemies = ceil(ofRandom(ceil(waveCounter / 2), waveCounter));
     ofLog() << ceil(waveCounter / 2);
@@ -107,12 +108,12 @@ void ofApp::destroyQueuedObjects()
 
 void ofApp::destroyObject(std::shared_ptr<GameObject> obj)
 {
-    int i = 0;
+    //int i = 0;
     for (auto& geom : obj->m_geom) {
-        ofLog() << "destroying geom of type " << obj->type;
-        ofLog() << obj;
-        ofLog() << i;
-        i++;
+        //ofLog() << "destroying geom of type " << obj->type;
+        //ofLog() << obj;
+        //ofLog() << i;
+        //i++;
         dGeomDestroy(geom);
         geomObjectMap.erase(geom);
     }
@@ -146,7 +147,6 @@ void ofApp::update()
     dSpaceCollide(space, 0, &nearCallback);
     dWorldStep(world, 0.05);
 
-    // remove all contact joints
     dJointGroupEmpty(contactgroup);
 
     destroyQueuedObjects();
