@@ -52,7 +52,7 @@ void TrackPlayerObject::draw()
     ofTranslate(pos.x, pos.y, pos.z + 2.5);
 
     ofRotate(90, 0, 1, 0);
-    ofRotate(Utils::dirToAngle(glm::normalize(glm::vec2(targetVelocity))) + (targetVelocity.x >= 0 ? -90 : 90), 1, 0, 0);
+    ofRotate(Utils::dirToAngle(glm::normalize(glm::vec2(targetVelocity))) - 90, 1, 0, 0);
 
     ofDrawRectangle(0, 0 - (this->maxHealth / 40), 0, 1, this->curHealth / 20);
 
