@@ -48,8 +48,8 @@ void ofApp::startNextWave()
     }
 
     numEnemies = ceil(ofRandom(ceil(waveCounter / 2), waveCounter));
-    ofLog() << ceil(waveCounter / 2);
-    ofLog() << numEnemies;
+    //ofLog() << ceil(waveCounter / 2);
+    //ofLog() << numEnemies;
     for (int i = 0; i < numEnemies; i++) {
         objectsCreateQueue.push_back({ TRACK_PLAYER_OBJECT, glm::vec3(ofRandom(0, 25), ofRandom(0, 25), 15), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space });
     }
