@@ -1,0 +1,153 @@
+# Blender MTL File: 'None'
+# Material Count: 12
+
+newmtl DefaultMaterial
+Ns 179.999996
+Ka 0.700000 0.700000 0.700000
+Kd 0.600000 0.600000 0.600000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump post_DefaultMaterial_Normal.png
+map_Kd post_DefaultMaterial_Diffuse.png
+map_Ks post_DefaultMaterial_Specular.png
+
+newmtl DefaultMaterial.001
+Ns 179.999996
+Ka 0.100000 0.100000 0.100000
+Kd 0.600000 0.600000 0.600000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump Stadium_DefaultMaterial_Normal.png
+map_Kd Stadium_DefaultMaterial_Diffuse.png
+map_Ks Stadium_DefaultMaterial_Specular.png
+
+newmtl DefaultMaterial.002
+Ns 179.999996
+Ka 0.500000 0.500000 0.500000
+Kd 0.600000 0.600000 0.600000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump Floor_DefaultMaterial_Normal.png
+map_Kd Floor_DefaultMaterial_Diffuse.png
+map_Ks Floor_DefaultMaterial_Specular.png
+
+newmtl DefaultMaterial.003
+Ns 179.999996
+Ka 0.500000 0.500000 0.500000
+Kd 0.600000 0.600000 0.600000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump Floor Ramp_DefaultMaterial_Normal.png
+map_Kd Floor Ramp_DefaultMaterial_Diffuse.png
+map_Ks Floor Ramp_DefaultMaterial_Specular.png
+
+newmtl DefaultMaterial.004
+Ns 179.999996
+Ka 0.100000 0.100000 0.100000
+Kd 0.600000 0.600000 0.600000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump floor 2_DefaultMaterial_Normal.png
+map_Kd floor 2_DefaultMaterial_Diffuse.png
+map_Ks floor 2_DefaultMaterial_Specular.png
+
+newmtl DefaultMaterial.005
+Ns 179.999996
+Ka 0.700000 0.700000 0.700000
+Kd 0.600000 0.600000 0.600000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump Pillars_DefaultMaterial_Normal.png
+map_Kd Pillars_DefaultMaterial_Diffuse.png
+map_Ks Pillars_DefaultMaterial_Specular.png
+
+newmtl DefaultMaterial.006
+Ns 179.999996
+Ka 0.500000 0.500000 0.500000
+Kd 0.600000 0.600000 0.600000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump Floor GRates_DefaultMaterial_Normal.png
+map_Kd Floor GRates_DefaultMaterial_Diffuse.png
+map_Ks Floor GRates_DefaultMaterial_Specular.png
+
+newmtl DefaultMaterial.007
+Ns 179.999996
+Ka 0.300000 0.300000 0.300000
+Kd 0.600000 0.600000 0.600000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump Wall_DefaultMaterial_Normal.png
+map_Kd Wall_DefaultMaterial_Diffuse.png
+map_Ks Wall_DefaultMaterial_Specular.png
+
+newmtl DefaultMaterial.008
+Ns 179.999996
+Ka 1.000000 1.000000 1.000000
+Kd 0.600000 0.600000 0.600000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump Pillars_DefaultMaterial_Normal.png
+map_Kd Pillars_DefaultMaterial_Diffuse.png
+map_Ks Pillars_DefaultMaterial_Specular.png
+
+newmtl Material.001
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Skybox.jpg
+
+newmtl Material.002
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.002997 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl Material.003
+Ns 225.000000
+Ka 0.300000 0.300000 0.300000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump Cloth_DefaultMaterial_Normal.png
+map_Kd Cloth_DefaultMaterial_Diffuse.png
+map_Ks Cloth_DefaultMaterial_Specular.png

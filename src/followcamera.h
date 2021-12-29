@@ -21,10 +21,10 @@ public:
     glm::vec3 prevFollowPoint{};
     glm::vec2 lookAngles = glm::vec2(45, 0);
 
-    float followPointRadius = 10;
+    float followPointRadius = 3;
     float rotationMaxAccel = 90;
     float alignmentAngleRange = 80;
-    float camDistance = 20;
+    float camDistance = 10;
     float autoControlDelay = 1;
     float sensitivity = 1.3;
 

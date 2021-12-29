@@ -31,8 +31,8 @@ void ofApp::setup()
 
     createObject<StaticObject>(glm::vec3(0, 0, 0),
         glm::vec3(90, 0, 0),
-        glm::vec3(20, 20, 20),
-        "arena/Orb Arena.obj",
+        glm::vec3(10, 10, 10),
+        "arena/Orb world.obj",
         world,
         space);
 
