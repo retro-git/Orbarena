@@ -15,8 +15,8 @@ public:
     /* ODE objects */
     dBodyID m_body;
     dMass m_mass;
-    dGeomID m_geom;
-    dTriMeshDataID m_data;
+    std::vector<dGeomID> m_geom;
+    std::vector<dTriMeshDataID> m_data;
 
     /* The 3D model */
     ofxAssimpModelLoader m_model;

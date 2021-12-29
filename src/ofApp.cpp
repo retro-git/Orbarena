@@ -39,12 +39,18 @@ void ofApp::setup()
             world,
             space));
 
-    createObject<StaticObject>(glm::vec3(0, 15, 1),
+    createObject<StaticObject>(glm::vec3(0, 0, 0),
+        glm::vec3(90, 0, 0),
+        glm::vec3(10, 10, 10),
+        "Orb Arena.obj",
+        world,
+        space);
+    /*createObject<StaticObject>(glm::vec3(0, 15, 1),
         glm::vec3(90, 180, 90),
         glm::vec3(5, 50, 50),
         "testCube.obj",
         world,
-        space);
+        space);*/
     createObject<TrackPlayerObject>(glm::vec3(0, 15, 15),
         glm::vec3(0, 0, 0),
         glm::vec3(1, 1, 1),
@@ -95,7 +101,9 @@ ofApp::createObject(glm::vec3 pos,
     std::shared_ptr<GameObject> obj = std::make_shared<T>(pos, rot, scale, modelName, w, s);
     objects.push_back(obj);
 
-    geomObjectMap.insert({ objects.back()->m_geom, objects.back() });
+    for (auto& geom : objects.back()->m_geom) {
+        geomObjectMap.insert({ geom, objects.back() });
+    }
 
     return obj;
 }
@@ -110,14 +118,18 @@ void ofApp::destroyQueuedObjects()
 
 void ofApp::destroyObject(std::shared_ptr<GameObject> obj)
 {
-    dGeomDestroy(obj->m_geom);
-    dGeomTriMeshDataDestroy(obj->m_data);
+    for (auto& geom : obj->m_geom) {
+        dGeomDestroy(geom);
+        geomObjectMap.erase(geom);
+    }
+
+    for (auto& data : obj->m_data) {
+        dGeomTriMeshDataDestroy(data);
+    }
 
     if (obj->type != STATIC_OBJECT) {
         dBodyDestroy(obj->m_body);
     }
-
-    geomObjectMap.erase(obj->m_geom);
 
     auto it = find(objects.begin(), objects.end(), obj);
     objects.erase(it);

@@ -42,7 +42,7 @@ void TrackPlayerObject::update()
 
     curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());
     if (curHealth <= 0)
-        myApp->objectsDestroyQueue.push_back(myApp->geomObjectMap.at(m_geom));
+        myApp->objectsDestroyQueue.push_back(myApp->geomObjectMap.at(m_geom.at(0)));
 
     if (ofGetElapsedTimef() - lastBulletSpawnTimestamp > spawnBulletDelay) {
         lastBulletSpawnTimestamp = ofGetElapsedTimef();
