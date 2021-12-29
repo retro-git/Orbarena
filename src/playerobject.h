@@ -20,6 +20,9 @@ public:
 
     float maxHealth = 300;
     float curHealth = maxHealth;
+    float targetHealth = curHealth;
+
+    float maxHealthLossSpeed{ 50 };
 
     glm::vec3 targetVelocity{};
 };

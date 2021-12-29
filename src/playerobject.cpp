@@ -34,7 +34,8 @@ void PlayerObject::update()
         Utils::moveTowards(
             currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
         currentVelocity[2]);
-    // GameObject::update();
+
+    curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());
 }
 
 /* Draw method collects latest data from ODE and draws the model at

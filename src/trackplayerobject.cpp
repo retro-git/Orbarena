@@ -38,7 +38,10 @@ void TrackPlayerObject::update()
         Utils::moveTowards(
             currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
         currentVelocity[2]);
-    // GameObject::update();
+
+    curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());
+    if (curHealth <= 0)
+        myApp->objectsDestroyQueue.push_back(myApp->geomObjectMap.at(m_geom));
 }
 
 void TrackPlayerObject::draw()

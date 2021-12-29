@@ -168,13 +168,6 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
 {
     auto obj1 = geomObjectMap.at(o1);
     auto obj2 = geomObjectMap.at(o2);
-    /* if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) &&
-   (obj1->type != PLAYER_OBJECT && obj2->type != PLAYER_OBJECT))
-   {
-     if (obj1->type == BULLET_OBJECT) objectsDestroyQueue.push_back(obj1);
-     if (obj2->type == BULLET_OBJECT) objectsDestroyQueue.push_back(obj2);
-     return;
-   }*/
 
     const int N = 10;
     dContact contact[N];
@@ -182,9 +175,6 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
     if (n > 0) {
         for (int i = 0; i < n; i++) {
             if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) && (obj1->type == STATIC_OBJECT || obj2->type == STATIC_OBJECT)) {
-                // ofLog() << contact[i].geom.normal[0];
-                // ofLog() << contact[i].geom.normal[1];
-                ofLog() << contact[i].geom.normal[2];
                 if (contact[i].geom.normal[2] < 0.7f) {
                     if (obj1->type == BULLET_OBJECT)
                         objectsDestroyQueue.push_back(obj1);
@@ -195,14 +185,10 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
             }
             if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) && (obj1->type == TRACK_PLAYER_OBJECT || obj2->type == TRACK_PLAYER_OBJECT)) {
                 if (obj1->type == TRACK_PLAYER_OBJECT) {
-                    std::dynamic_pointer_cast<TrackPlayerObject>(obj1)->curHealth -= 10;
-                    if (std::dynamic_pointer_cast<TrackPlayerObject>(obj1)->curHealth <= 0)
-                        objectsDestroyQueue.push_back(obj1);
+                    std::dynamic_pointer_cast<TrackPlayerObject>(obj1)->targetHealth -= 10;
                 }
                 if (obj2->type == TRACK_PLAYER_OBJECT) {
-                    std::dynamic_pointer_cast<TrackPlayerObject>(obj2)->curHealth -= 10;
-                    if (std::dynamic_pointer_cast<TrackPlayerObject>(obj2)->curHealth <= 0)
-                        objectsDestroyQueue.push_back(obj2);
+                    std::dynamic_pointer_cast<TrackPlayerObject>(obj2)->targetHealth -= 10;
                 }
                 if (obj1->type == BULLET_OBJECT)
                     objectsDestroyQueue.push_back(obj1);
