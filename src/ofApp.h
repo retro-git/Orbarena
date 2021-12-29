@@ -14,7 +14,6 @@
 #include <unordered_map>
 
 #include "ofxAssimpModelLoader.h"
-#include "ofxSkyBox.h"
 
 class ofApp : public ofBaseApp {
 public:
@@ -48,6 +47,8 @@ public:
 
     void collide(dGeomID o1, dGeomID o2);
 
+    void startNextWave();
+
     FollowCamera cam;
 
     dWorldID world;
@@ -57,8 +58,6 @@ public:
 
     /* A light */
     ofLight m_light1;
-
-    ofxSkyBox skybox;
 
     glm::vec2 prevMousePosition;
 
@@ -76,7 +75,8 @@ public:
 
     ofTrueTypeFont HUDFont;
 
-    int waveCounter = 1;
+    int waveCounter = 0;
+    int numEnemies = 0;
 };
 
 static void

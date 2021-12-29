@@ -40,13 +40,18 @@ void TrackPlayerObject::update()
             currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
         currentVelocity[2]);
 
-    curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());
-    if (curHealth <= 0)
-        myApp->objectsDestroyQueue.push_back(myApp->geomObjectMap.at(m_geom.at(0)));
-
     if (ofGetElapsedTimef() - lastBulletSpawnTimestamp > spawnBulletDelay) {
         lastBulletSpawnTimestamp = ofGetElapsedTimef();
         myApp->objectsCreateQueue.push_back({ ENEMY_BULLET_OBJECT, pos, glm::vec3(0, 0, 90), glm::vec3(0.5, 0.5, 0.5), "Orbos.dae", myApp->world, myApp->space });
+    }
+
+    curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());
+    if (curHealth <= 0) {
+        auto obj = myApp->geomObjectMap.at(m_geom.at(0));
+        if (find(myApp->objectsDestroyQueue.begin(), myApp->objectsDestroyQueue.end(), obj) == myApp->objectsDestroyQueue.end()) {
+            myApp->objectsDestroyQueue.push_back(obj);
+            myApp->numEnemies--;
+        }
     }
 }
 

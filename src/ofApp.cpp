@@ -19,17 +19,7 @@ void ofApp::setup()
     m_light1.lookAt(glm::vec3(0, 0, 0));
     m_light1.enable();
 
-    skybox.load();
-
     HUDFont.load("verdana.ttf", 18, true, true);
-
-    /*this->player = std::dynamic_pointer_cast<PlayerObject>(
-        createObject<PlayerObject>(glm::vec3(0, 0, 25),
-            glm::vec3(0, 0, 0),
-            glm::vec3(1, 1, 1),
-            "Orbos.dae",
-            world,
-            space));*/
 
     this->player = std::dynamic_pointer_cast<PlayerObject>(
         createObject<PlayerObject>(glm::vec3(0, 0, 25),
@@ -41,37 +31,25 @@ void ofApp::setup()
 
     createObject<StaticObject>(glm::vec3(0, 0, 0),
         glm::vec3(90, 0, 0),
-        glm::vec3(10, 10, 10),
-        "Orb Arena.obj",
+        glm::vec3(20, 20, 20),
+        "arena/Orb Arena.obj",
         world,
         space);
-    /*createObject<StaticObject>(glm::vec3(0, 15, 1),
-        glm::vec3(90, 180, 90),
-        glm::vec3(5, 50, 50),
-        "testCube.obj",
-        world,
-        space);*/
-    createObject<TrackPlayerObject>(glm::vec3(0, 15, 15),
-        glm::vec3(0, 0, 0),
-        glm::vec3(1, 1, 1),
-        "Orbos.dae",
-        world,
-        space);
-    /*createObject<TrackPlayerObject>(glm::vec3(25, 15, 25),
-        glm::vec3(0, 0, 0),
-        glm::vec3(1, 1, 1),
-        "Orbos.dae",
-        world,
-        space);
-    createObject<TrackPlayerObject>(glm::vec3(-35, -25, 25),
-        glm::vec3(0, 0, 0),
-        glm::vec3(1, 1, 1),
-        "Orbos.dae",
-        world,
-        space);*/
 
     cam = FollowCamera(player);
     cam.setNearClip(0.01);
+}
+
+void ofApp::startNextWave()
+{
+    waveCounter++;
+
+    numEnemies = ceil(ofRandom(ceil(waveCounter / 2), waveCounter));
+    ofLog() << ceil(waveCounter / 2);
+    ofLog() << numEnemies;
+    for (int i = 0; i < numEnemies; i++) {
+        objectsCreateQueue.push_back({ TRACK_PLAYER_OBJECT, glm::vec3(ofRandom(0, 25), ofRandom(0, 25), 15), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), "Orbos.dae", world, space });
+    }
 }
 
 void ofApp::createQueuedObjects()
@@ -83,6 +61,15 @@ void ofApp::createQueuedObjects()
             break;
         case BULLET_OBJECT:
             createObject<BulletObject>(obj.pos, obj.rot, obj.scale, obj.modelName, obj.w, obj.s);
+            break;
+        case TRACK_PLAYER_OBJECT:
+            createObject<TrackPlayerObject>(obj.pos, obj.rot, obj.scale, obj.modelName, obj.w, obj.s);
+            break;
+        case STATIC_OBJECT:
+            createObject<StaticObject>(obj.pos, obj.rot, obj.scale, obj.modelName, obj.w, obj.s);
+            break;
+        case PLAYER_OBJECT:
+            createObject<PlayerObject>(obj.pos, obj.rot, obj.scale, obj.modelName, obj.w, obj.s);
             break;
         }
     }
@@ -118,7 +105,12 @@ void ofApp::destroyQueuedObjects()
 
 void ofApp::destroyObject(std::shared_ptr<GameObject> obj)
 {
+    int i = 0;
     for (auto& geom : obj->m_geom) {
+        ofLog() << "destroying geom of type " << obj->type;
+        ofLog() << obj;
+        ofLog() << i;
+        i++;
         dGeomDestroy(geom);
         geomObjectMap.erase(geom);
     }
@@ -138,6 +130,9 @@ void ofApp::destroyObject(std::shared_ptr<GameObject> obj)
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    if (numEnemies == 0)
+        startNextWave();
+
     for (auto x : objects)
         x->update();
 
@@ -147,12 +142,13 @@ void ofApp::update()
     this->inputMouseVertical = 0;
 
     dSpaceCollide(space, 0, &nearCallback);
-    destroyQueuedObjects();
-    createQueuedObjects();
     dWorldStep(world, 0.05);
 
     // remove all contact joints
     dJointGroupEmpty(contactgroup);
+
+    destroyQueuedObjects();
+    createQueuedObjects();
 }
 
 //--------------------------------------------------------------
@@ -166,8 +162,6 @@ void ofApp::draw()
 
     for (auto x : objects)
         x->draw();
-
-    //skybox.draw();
 
     cam.end();
 
@@ -205,9 +199,11 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
             if (((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) || (obj1->type == ENEMY_BULLET_OBJECT || obj2->type == ENEMY_BULLET_OBJECT)) && (obj1->type == STATIC_OBJECT || obj2->type == STATIC_OBJECT)) {
                 if (contact[i].geom.normal[2] < 0.7f) {
                     if (obj1->type == BULLET_OBJECT || obj1->type == ENEMY_BULLET_OBJECT)
-                        objectsDestroyQueue.push_back(obj1);
+                        if (find(objectsDestroyQueue.begin(), objectsDestroyQueue.end(), obj1) == objectsDestroyQueue.end())
+                            objectsDestroyQueue.push_back(obj1);
                     if (obj2->type == BULLET_OBJECT || obj2->type == ENEMY_BULLET_OBJECT)
-                        objectsDestroyQueue.push_back(obj2);
+                        if (find(objectsDestroyQueue.begin(), objectsDestroyQueue.end(), obj2) == objectsDestroyQueue.end())
+                            objectsDestroyQueue.push_back(obj2);
                     return;
                 }
             }
@@ -219,9 +215,11 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
                     std::dynamic_pointer_cast<TrackPlayerObject>(obj2)->targetHealth -= 10;
                 }
                 if (obj1->type == BULLET_OBJECT)
-                    objectsDestroyQueue.push_back(obj1);
+                    if (find(objectsDestroyQueue.begin(), objectsDestroyQueue.end(), obj1) == objectsDestroyQueue.end())
+                        objectsDestroyQueue.push_back(obj1);
                 if (obj2->type == BULLET_OBJECT)
-                    objectsDestroyQueue.push_back(obj2);
+                    if (find(objectsDestroyQueue.begin(), objectsDestroyQueue.end(), obj2) == objectsDestroyQueue.end())
+                        objectsDestroyQueue.push_back(obj2);
                 return;
             }
             if ((obj1->type == ENEMY_BULLET_OBJECT || obj2->type == ENEMY_BULLET_OBJECT) && (obj1->type == PLAYER_OBJECT || obj2->type == PLAYER_OBJECT)) {
@@ -232,9 +230,11 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
                     std::dynamic_pointer_cast<PlayerObject>(obj2)->targetHealth -= 10;
                 }
                 if (obj1->type == ENEMY_BULLET_OBJECT)
-                    objectsDestroyQueue.push_back(obj1);
+                    if (find(objectsDestroyQueue.begin(), objectsDestroyQueue.end(), obj1) == objectsDestroyQueue.end())
+                        objectsDestroyQueue.push_back(obj1);
                 if (obj2->type == ENEMY_BULLET_OBJECT)
-                    objectsDestroyQueue.push_back(obj2);
+                    if (find(objectsDestroyQueue.begin(), objectsDestroyQueue.end(), obj2) == objectsDestroyQueue.end())
+                        objectsDestroyQueue.push_back(obj2);
                 return;
             }
             // contact[i].geom.normal
