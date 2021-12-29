@@ -14,6 +14,8 @@ PlayerObject::PlayerObject(glm::vec3 pos,
 
 void PlayerObject::update()
 {
+    curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());
+
     const dReal* currentVelocity = dBodyGetLinearVel(m_body);
 
     if (myApp->inputVertical == 0 && myApp->inputHorizontal == 0)
@@ -34,13 +36,7 @@ void PlayerObject::update()
         Utils::moveTowards(
             currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
         currentVelocity[2]);
-
-    curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());
 }
-
-/* Draw method collects latest data from ODE and draws the model at
- * that location/orientation.
- */
 
 void PlayerObject::draw()
 {

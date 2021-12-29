@@ -1,4 +1,6 @@
 #include "trackplayerobject.h"
+#include "enemybulletobject.h"
+#include "ofApp.h"
 #include "utils.h"
 
 TrackPlayerObject::TrackPlayerObject(glm::vec3 pos,
@@ -11,8 +13,8 @@ TrackPlayerObject::TrackPlayerObject(glm::vec3 pos,
     this->init(pos, rot, scale, modelName, true, w, s);
     this->type = TRACK_PLAYER_OBJECT;
 
-    this->maxSpeed = ofRandom(5, 10);
-    this->maxAccel = ofRandom(1, 10);
+    this->maxSpeed = ofRandom(1, 3);
+    this->maxAccel = ofRandom(1, 3);
 }
 
 void TrackPlayerObject::update()
@@ -28,8 +30,7 @@ void TrackPlayerObject::update()
         glm::vec3(playerPosition[0], playerPosition[1], playerPosition[2]) - glm::vec3(currentPosition[0], currentPosition[1], currentPosition[2]));
 
     //targetVelocity = glm::normalize(dirToPlayer + (glm::vec3(ofRandom(-1, 1), ofRandom(-1, 1), 0))) * maxSpeed;
-    targetVelocity = glm::normalize(dirToPlayer * maxSpeed);
-    //targetVelocity = dirToPlayer * maxSpeed;
+    targetVelocity = dirToPlayer * maxSpeed;
 
     dBodySetLinearVel(
         m_body,
@@ -42,6 +43,11 @@ void TrackPlayerObject::update()
     curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());
     if (curHealth <= 0)
         myApp->objectsDestroyQueue.push_back(myApp->geomObjectMap.at(m_geom));
+
+    if (ofGetElapsedTimef() - lastBulletSpawnTimestamp > spawnBulletDelay) {
+        lastBulletSpawnTimestamp = ofGetElapsedTimef();
+        myApp->objectsCreateQueue.push_back({ ENEMY_BULLET_OBJECT, pos, glm::vec3(0, 0, 90), glm::vec3(0.5, 0.5, 0.5), "Orbos.dae", myApp->world, myApp->space });
+    }
 }
 
 void TrackPlayerObject::draw()

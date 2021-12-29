@@ -1,18 +1,20 @@
 #pragma once
 
 #include "bulletobject.h"
+#include "enemybulletobject.h"
 #include "followcamera.h"
 #include "gameobject.h"
 #include "ode/ode.h"
 #include "ofMain.h"
-#include "ofxSkyBox.h"
 #include "physicsobject.h"
 #include "playerobject.h"
+#include "queueobjstruct.h"
 #include "staticobject.h"
 #include "trackplayerobject.h"
 #include <unordered_map>
 
 #include "ofxAssimpModelLoader.h"
+#include "ofxSkyBox.h"
 
 class ofApp : public ofBaseApp {
 public:
@@ -40,6 +42,7 @@ public:
         dWorldID w,
         dSpaceID s);
 
+    void createQueuedObjects();
     void destroyQueuedObjects();
     void destroyObject(std::shared_ptr<GameObject>);
 
@@ -67,6 +70,7 @@ public:
     std::shared_ptr<PlayerObject> player;
 
     std::vector<std::shared_ptr<GameObject>> objects;
+    std::vector<QueueObjStruct> objectsCreateQueue;
     std::vector<std::shared_ptr<GameObject>> objectsDestroyQueue;
     std::unordered_map<dGeomID, std::shared_ptr<GameObject>> geomObjectMap;
 

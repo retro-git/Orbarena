@@ -65,8 +65,8 @@ void GameObject::init(glm::vec3 pos,
     // dMass mass;
     // dMassSetTrimesh(&mass, 5000, m_geom);
 
-    ofLog() << m_model.getMeshNames().at(0);
-    ofLog() << m_model.getMeshCount();
+    //ofLog() << m_model.getMeshNames().at(0);
+    //ofLog() << m_model.getMeshCount();
 }
 
 void GameObject::draw()

@@ -68,6 +68,21 @@ void ofApp::setup()
     cam.setNearClip(0.01);
 }
 
+void ofApp::createQueuedObjects()
+{
+    for (auto& obj : objectsCreateQueue) {
+        switch (obj.type) {
+        case ENEMY_BULLET_OBJECT:
+            createObject<EnemyBulletObject>(obj.pos, obj.rot, obj.scale, obj.modelName, obj.w, obj.s);
+            break;
+        case BULLET_OBJECT:
+            createObject<BulletObject>(obj.pos, obj.rot, obj.scale, obj.modelName, obj.w, obj.s);
+            break;
+        }
+    }
+    objectsCreateQueue.clear();
+}
+
 template <typename T>
 std::shared_ptr<GameObject>
 ofApp::createObject(glm::vec3 pos,
@@ -121,6 +136,7 @@ void ofApp::update()
 
     dSpaceCollide(space, 0, &nearCallback);
     destroyQueuedObjects();
+    createQueuedObjects();
     dWorldStep(world, 0.05);
 
     // remove all contact joints
@@ -174,15 +190,15 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
     int n = dCollide(o1, o2, N, &contact[0].geom, sizeof(dContact));
     if (n > 0) {
         for (int i = 0; i < n; i++) {
-            if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) && (obj1->type == STATIC_OBJECT || obj2->type == STATIC_OBJECT)) {
+            /*if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) || (obj1->type == ENEMY_BULLET_OBJECT || obj2->type == ENEMY_BULLET_OBJECT) && (obj1->type == STATIC_OBJECT || obj2->type == STATIC_OBJECT)) {
                 if (contact[i].geom.normal[2] < 0.7f) {
-                    if (obj1->type == BULLET_OBJECT)
+                    if (obj1->type == BULLET_OBJECT || obj1->type == ENEMY_BULLET_OBJECT)
                         objectsDestroyQueue.push_back(obj1);
-                    if (obj2->type == BULLET_OBJECT)
+                    if (obj2->type == BULLET_OBJECT || obj2->type == ENEMY_BULLET_OBJECT)
                         objectsDestroyQueue.push_back(obj2);
                     return;
                 }
-            }
+            }*/
             if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) && (obj1->type == TRACK_PLAYER_OBJECT || obj2->type == TRACK_PLAYER_OBJECT)) {
                 if (obj1->type == TRACK_PLAYER_OBJECT) {
                     std::dynamic_pointer_cast<TrackPlayerObject>(obj1)->targetHealth -= 10;
@@ -193,6 +209,19 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
                 if (obj1->type == BULLET_OBJECT)
                     objectsDestroyQueue.push_back(obj1);
                 if (obj2->type == BULLET_OBJECT)
+                    objectsDestroyQueue.push_back(obj2);
+                return;
+            }
+            if ((obj1->type == ENEMY_BULLET_OBJECT || obj2->type == ENEMY_BULLET_OBJECT) && (obj1->type == PLAYER_OBJECT || obj2->type == PLAYER_OBJECT)) {
+                if (obj1->type == PLAYER_OBJECT) {
+                    std::dynamic_pointer_cast<PlayerObject>(obj1)->targetHealth -= 10;
+                }
+                if (obj2->type == PLAYER_OBJECT) {
+                    std::dynamic_pointer_cast<PlayerObject>(obj2)->targetHealth -= 10;
+                }
+                if (obj1->type == ENEMY_BULLET_OBJECT)
+                    objectsDestroyQueue.push_back(obj1);
+                if (obj2->type == ENEMY_BULLET_OBJECT)
                     objectsDestroyQueue.push_back(obj2);
                 return;
             }

@@ -23,6 +23,9 @@ public:
     float curHealth = maxHealth;
     float targetHealth = curHealth;
 
+    float lastBulletSpawnTimestamp{ 0 };
+    float spawnBulletDelay = 5;
+
     glm::vec3 targetVelocity{};
 };
 

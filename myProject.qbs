@@ -14,6 +14,8 @@ Project{
         files: [
             "src/bulletobject.cpp",
             "src/bulletobject.h",
+            "src/enemybulletobject.cpp",
+            "src/enemybulletobject.h",
             "src/followcamera.cpp",
             "src/followcamera.h",
             "src/gameobject.cpp",
@@ -26,6 +28,7 @@ Project{
             "src/main.cpp",
             "src/ofApp.cpp",
             "src/ofApp.h",
+            "src/queueobjstruct.h",
             "src/staticobject.cpp",
             "src/staticobject.h",
             "src/trackplayerobject.cpp",
