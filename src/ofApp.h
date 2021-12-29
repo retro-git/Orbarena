@@ -71,6 +71,8 @@ public:
     std::unordered_map<dGeomID, std::shared_ptr<GameObject>> geomObjectMap;
 
     ofTrueTypeFont HUDFont;
+
+    int waveCounter = 1;
 };
 
 static void

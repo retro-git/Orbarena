@@ -60,14 +60,6 @@ void FollowCamera::autoControl()
 
     float rotationMaxAccelThisFrame = rotationMaxAccel * ofGetLastFrameTime();
 
-    auto dirToAngle = [](glm::vec2 dir) {
-        float angle = glm::degrees(acos(dir.y));
-        if (dir.x >= 0)
-            return angle;
-        else
-            return 360 - angle;
-    };
-
     auto angleDelta = [](float start, float end) {
         float d = fmod(end - start, 360);
         if (d > 180.f)
@@ -85,7 +77,7 @@ void FollowCamera::autoControl()
         };
 
     // scale down rotation accel for smaller adjustments
-    float targetRotDiffAbs = abs(angleDelta(lookAngles.y, dirToAngle(glm::normalize(diff))));
+    float targetRotDiffAbs = abs(angleDelta(lookAngles.y, Utils::dirToAngle(glm::normalize(diff))));
     if (targetRotDiffAbs < alignmentAngleRange) {
         rotationMaxAccelThisFrame *= targetRotDiffAbs / alignmentAngleRange;
     } else if (180.f - targetRotDiffAbs < alignmentAngleRange) {
@@ -93,9 +85,9 @@ void FollowCamera::autoControl()
     }
 
     lookAngles.y = moveTowardsAngle(
-        lookAngles.y, dirToAngle(glm::normalize(diff)), rotationMaxAccelThisFrame);
+        lookAngles.y, Utils::dirToAngle(glm::normalize(diff)), rotationMaxAccelThisFrame);
 
-    // lookAngles.y = dirToAngle(glm::normalize(diff));
+    // lookAngles.y = Utils::dirToAngle(glm::normalize(diff));
 }
 
 void FollowCamera::update()

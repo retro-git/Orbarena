@@ -45,12 +45,12 @@ void ofApp::setup()
         "testCube.obj",
         world,
         space);
-    /*createObject<TrackPlayerObject>(glm::vec3(0, 50, 15),
+    createObject<TrackPlayerObject>(glm::vec3(0, 15, 15),
         glm::vec3(0, 0, 0),
         glm::vec3(1, 1, 1),
         "Orbos.dae",
         world,
-        space);*/
+        space);
     /*createObject<TrackPlayerObject>(glm::vec3(25, 15, 25),
         glm::vec3(0, 0, 0),
         glm::vec3(1, 1, 1),
@@ -144,6 +144,10 @@ void ofApp::draw()
     cam.end();
 
     ofDisableDepthTest();
+
+    ofSetColor(255, 255, 200, 255);
+    string wave = "WAVE: " + std::to_string(waveCounter);
+    HUDFont.drawString(wave, 10, 30);
 
     ofSetColor(0, 128, 0, 200);
     string health = "HEALTH:";
