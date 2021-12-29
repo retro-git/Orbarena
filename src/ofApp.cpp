@@ -190,7 +190,7 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
     int n = dCollide(o1, o2, N, &contact[0].geom, sizeof(dContact));
     if (n > 0) {
         for (int i = 0; i < n; i++) {
-            /*if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) || (obj1->type == ENEMY_BULLET_OBJECT || obj2->type == ENEMY_BULLET_OBJECT) && (obj1->type == STATIC_OBJECT || obj2->type == STATIC_OBJECT)) {
+            if (((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) || (obj1->type == ENEMY_BULLET_OBJECT || obj2->type == ENEMY_BULLET_OBJECT)) && (obj1->type == STATIC_OBJECT || obj2->type == STATIC_OBJECT)) {
                 if (contact[i].geom.normal[2] < 0.7f) {
                     if (obj1->type == BULLET_OBJECT || obj1->type == ENEMY_BULLET_OBJECT)
                         objectsDestroyQueue.push_back(obj1);
@@ -198,7 +198,7 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
                         objectsDestroyQueue.push_back(obj2);
                     return;
                 }
-            }*/
+            }
             if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) && (obj1->type == TRACK_PLAYER_OBJECT || obj2->type == TRACK_PLAYER_OBJECT)) {
                 if (obj1->type == TRACK_PLAYER_OBJECT) {
                     std::dynamic_pointer_cast<TrackPlayerObject>(obj1)->targetHealth -= 10;
