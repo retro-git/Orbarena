@@ -17,6 +17,7 @@ TrackPlayerObject::TrackPlayerObject(glm::vec3 pos,
     this->maxAccel = ofRandom(1, myApp->waveCounter * 2);
 
     lastBulletSpawnTimestamp = ofGetElapsedTimef();
+    this->spawnBulletDelay = max(ofRandom(spawnBulletDelay / myApp->waveCounter, spawnBulletDelay), 1.f);
 }
 
 void TrackPlayerObject::update()
@@ -51,7 +52,7 @@ void TrackPlayerObject::update()
 
     if (ofGetElapsedTimef() - lastBulletSpawnTimestamp > spawnBulletDelay) {
         lastBulletSpawnTimestamp = ofGetElapsedTimef();
-        myApp->objectsCreateQueue.push_back({ ENEMY_BULLET_OBJECT, pos, glm::vec3(0, 0, 90), glm::vec3(0.5, 0.5, 0.5), "Orbos.dae", myApp->world, myApp->space });
+        myApp->objectsCreateQueue.push_back({ ENEMY_BULLET_OBJECT, pos, glm::vec3(0, 0, 90), glm::vec3(0.5, 0.5, 0.5), "EnemyBullet.obj", myApp->world, myApp->space });
     }
 
     curHealth = Utils::moveTowards(curHealth, targetHealth, maxHealthLossSpeed * ofGetLastFrameTime());

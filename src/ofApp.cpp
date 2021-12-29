@@ -45,6 +45,7 @@ void ofApp::startNextWave()
     waveCounter++;
     if (waveCounter > highScore) {
         highScore = waveCounter;
+        player->maxAccel += 1;
     }
 
     numEnemies = ceil(ofRandom(ceil(waveCounter / 2), waveCounter));
@@ -420,7 +421,7 @@ void ofApp::mousePressed(int x, int y, int button)
     createObject<BulletObject>(player->pos,
         glm::vec3(0, 0, 90),
         glm::vec3(0.5, 0.5, 0.5),
-        "Orbos.dae",
+        "PlayerBullet.obj",
         world,
         space);
 }

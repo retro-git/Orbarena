@@ -8,7 +8,7 @@ BulletObject::BulletObject(glm::vec3 pos,
     dWorldID w,
     dSpaceID s)
 {
-    pos.z += 2.5;
+    pos.z += 2;
     this->init(pos, rot, scale, modelName, true, w, s);
     this->type = BULLET_OBJECT;
     this->spawnTime = ofGetElapsedTimef();
@@ -36,7 +36,7 @@ void BulletObject::update()
         }
     }
 
-    const dReal* currentVelocity = dBodyGetLinearVel(m_body);
+    /*const dReal* currentVelocity = dBodyGetLinearVel(m_body);
 
     const dReal* playerVelocity = dBodyGetLinearVel(myApp->player->m_body);
 
@@ -55,7 +55,7 @@ void BulletObject::update()
         Utils::moveTowards(
             currentVelocity[1], targetVelocity.y, maxAccel * ofGetLastFrameTime()),
         currentVelocity[2]);
-    // GameObject::update();
+    // GameObject::update();*/
 }
 
 void BulletObject::draw()

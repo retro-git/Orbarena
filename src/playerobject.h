@@ -15,8 +15,8 @@ public:
     virtual void update() override;
     virtual void draw() override;
 
-    float maxSpeed = 7;
-    float maxAccel = 7;
+    float maxSpeed = 8;
+    float maxAccel = 8;
 
     float maxHealth = 50;
     float curHealth = maxHealth;
