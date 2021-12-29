@@ -49,11 +49,10 @@ void TrackPlayerObject::draw()
 
     ofFill();
     ofSetColor(0, 0, 0, 200);
-    //ofTranslate(pos.x, pos.y + (this->maxHealth / 10), pos.z + 2.5);
     ofTranslate(pos.x, pos.y, pos.z + 2.5);
 
     ofRotate(90, 0, 1, 0);
-    ofRotate(Utils::dirToAngle(glm::normalize(glm::vec2(targetVelocity))) + 90, 1, 0, 0);
+    ofRotate(Utils::dirToAngle(glm::normalize(glm::vec2(targetVelocity))) + (targetVelocity.x >= 0 ? -90 : 90), 1, 0, 0);
 
     ofDrawRectangle(0, 0 - (this->maxHealth / 40), 0, 1, this->curHealth / 20);
 
@@ -61,9 +60,9 @@ void TrackPlayerObject::draw()
 
     ofDrawRectangle(0, 0 - (this->maxHealth / 40), 0, 1, this->maxHealth / 20);
 
-    /*this->curHealth -= 1;
+    this->curHealth -= 1;
     if (this->curHealth <= 0)
-        this->curHealth = this->maxHealth;*/
+        this->curHealth = this->maxHealth;
 
     ofFill();
 
