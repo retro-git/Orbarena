@@ -15,7 +15,7 @@ void ofApp::setup()
     dAllocateODEDataForThread(dAllocateMaskAll);
 
     /* The light */
-    m_light1.setPosition(0, 0, 15);
+    m_light1.setPosition(0, 0, 100);
     m_light1.lookAt(glm::vec3(0, 0, 0));
     m_light1.enable();
 
