@@ -18,7 +18,7 @@ public:
     float maxSpeed = 8;
     float maxAccel = 8;
 
-    float maxHealth = 50;
+    float maxHealth = 100;
     float curHealth = maxHealth;
     float targetHealth = curHealth;
 

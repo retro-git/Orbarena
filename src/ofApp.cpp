@@ -275,10 +275,10 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
             }
             if ((obj1->type == BULLET_OBJECT || obj2->type == BULLET_OBJECT) && (obj1->type == TRACK_PLAYER_OBJECT || obj2->type == TRACK_PLAYER_OBJECT)) {
                 if (obj1->type == TRACK_PLAYER_OBJECT) {
-                    std::dynamic_pointer_cast<TrackPlayerObject>(obj1)->targetHealth -= 10;
+                    std::dynamic_pointer_cast<TrackPlayerObject>(obj1)->targetHealth -= projectileDamage;
                 }
                 if (obj2->type == TRACK_PLAYER_OBJECT) {
-                    std::dynamic_pointer_cast<TrackPlayerObject>(obj2)->targetHealth -= 10;
+                    std::dynamic_pointer_cast<TrackPlayerObject>(obj2)->targetHealth -= projectileDamage;
                 }
                 if (obj1->type == BULLET_OBJECT)
                     if (find(objectsDestroyQueue.begin(), objectsDestroyQueue.end(), obj1) == objectsDestroyQueue.end())
@@ -290,10 +290,10 @@ void ofApp::collide(dGeomID o1, dGeomID o2)
             }
             if ((obj1->type == ENEMY_BULLET_OBJECT || obj2->type == ENEMY_BULLET_OBJECT) && (obj1->type == PLAYER_OBJECT || obj2->type == PLAYER_OBJECT)) {
                 if (obj1->type == PLAYER_OBJECT) {
-                    std::dynamic_pointer_cast<PlayerObject>(obj1)->targetHealth -= 10;
+                    std::dynamic_pointer_cast<PlayerObject>(obj1)->targetHealth -= projectileDamage;
                 }
                 if (obj2->type == PLAYER_OBJECT) {
-                    std::dynamic_pointer_cast<PlayerObject>(obj2)->targetHealth -= 10;
+                    std::dynamic_pointer_cast<PlayerObject>(obj2)->targetHealth -= projectileDamage;
                 }
                 if (obj1->type == ENEMY_BULLET_OBJECT)
                     if (find(objectsDestroyQueue.begin(), objectsDestroyQueue.end(), obj1) == objectsDestroyQueue.end())

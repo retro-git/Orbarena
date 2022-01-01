@@ -81,8 +81,9 @@ public:
     int waveCounter = 0;
     int numEnemies = 0;
 
-    bool resetFlag = false;
+    int projectileDamage = 20;
 
+    bool resetFlag = false;
     bool wallhackPowerup = false;
     bool menuFlag = true;
 };

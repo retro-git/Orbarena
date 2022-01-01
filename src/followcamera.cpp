@@ -103,7 +103,7 @@ void FollowCamera::update()
     glm::quat rotation = glm::quat(
         glm::vec3(glm::radians(lookAngles.x), 0, glm::radians(-lookAngles.y)));
     glm::vec3 lookDir = glm::rotate(rotation, glm::vec3(0, 0, -1));
-    glm::vec3 pos = followPoint - lookDir * camDistance;
+    glm::vec3 pos = followPoint - (lookDir * camDistance);
 
     this->setPosition(pos);
     this->setOrientation(rotation);
