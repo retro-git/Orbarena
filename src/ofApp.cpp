@@ -244,8 +244,6 @@ void ofApp::drawHud()
 
     ofDrawRectangle(ofGetWidth() / 2 - ((this->player->maxHealth) / 2), ofGetHeight() - 100, this->player->maxHealth, 50);
 
-    ofLog() << killsSinceLastPowerup;
-
     if (killsSinceLastPowerup >= powerupKillsRequired) {
         ofSetColor(255, 0, 0, 255);
         string powerup = "Press H for wallhack powerup";
