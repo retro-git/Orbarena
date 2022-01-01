@@ -86,6 +86,11 @@ public:
     bool resetFlag = false;
     bool wallhackPowerup = false;
     bool menuFlag = true;
+
+    int killsSinceLastPowerup = 0;
+    float lastPowerupActivateTime = 0;
+    float powerupEnableTime = 15;
+    float powerupKillsRequired = 10;
 };
 
 static void

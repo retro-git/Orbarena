@@ -139,6 +139,10 @@ void ofApp::update()
     if (numEnemies == 0)
         startNextWave();
 
+    if (wallhackPowerup && ofGetElapsedTimef() - lastPowerupActivateTime > powerupEnableTime) {
+        wallhackPowerup = false;
+    }
+
     for (auto x : objects)
         x->update();
 
@@ -189,7 +193,7 @@ void ofApp::draw()
         str = "CONTROL CAMERA WITH MOUSE, OR ALLOW IT TO AUTO CONTROL ITSELF.";
         bounds = HUDFont.getStringBoundingBox(str, 0, 0);
         HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset * 13);
-        str = "PRESS Q TO QUIT. PRESS H TO ENABLE WALLHACK POWERUP (PROTOTYPE).";
+        str = "PRESS Q TO QUIT. PRESS H TO ENABLE WALLHACK POWERUP (WHEN AVAILABLE).";
         bounds = HUDFont.getStringBoundingBox(str, 0, 0);
         HUDFont.drawString(str, ofGetWidth() / 2 - bounds.width / 2, offset * 16);
         str = "PRESS C WHILE PLAYING TO ENTER THIS SCREEN AGAIN.";
@@ -239,6 +243,15 @@ void ofApp::drawHud()
     ofNoFill();
 
     ofDrawRectangle(ofGetWidth() / 2 - ((this->player->maxHealth) / 2), ofGetHeight() - 100, this->player->maxHealth, 50);
+
+    ofLog() << killsSinceLastPowerup;
+
+    if (killsSinceLastPowerup >= powerupKillsRequired) {
+        ofSetColor(255, 0, 0, 255);
+        string powerup = "Press H for wallhack powerup";
+        bounds = HUDFont.getStringBoundingBox(powerup, 0, 0);
+        HUDFont.drawString(powerup, (ofGetWidth() / 2) - (bounds.width / 2), ofGetHeight() / 10);
+    }
 
     if (player->curHealth <= 0) {
         ofSetColor(255, 0, 0, 255);
@@ -349,7 +362,11 @@ void ofApp::keyPressed(int key)
         break;
     case 'h':
     case 'H':
-        this->wallhackPowerup = !wallhackPowerup;
+        if (killsSinceLastPowerup >= powerupKillsRequired) {
+            this->wallhackPowerup = true;
+            lastPowerupActivateTime = ofGetElapsedTimef();
+            killsSinceLastPowerup = 0;
+        }
         break;
     case 'c':
     case 'C':

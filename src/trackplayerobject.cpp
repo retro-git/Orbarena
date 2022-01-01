@@ -61,6 +61,7 @@ void TrackPlayerObject::update()
         if (find(myApp->objectsDestroyQueue.begin(), myApp->objectsDestroyQueue.end(), obj) == myApp->objectsDestroyQueue.end()) {
             myApp->objectsDestroyQueue.push_back(obj);
             myApp->numEnemies--;
+            myApp->killsSinceLastPowerup++;
         }
     }
 }
