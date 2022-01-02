@@ -175,7 +175,6 @@ void ofApp::draw()
     ofFill();
     ofBackground(20);
     if (menuFlag) {
-        ofDisableAlphaBlending();
         ofSetColor(0xffffff);
         auto offset = 34;
         string str = "WELCOME TO ORB ARENA!";
